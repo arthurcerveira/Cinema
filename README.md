@@ -26,15 +26,17 @@ $ docker build -t cinema_mysql .
 $ docker run -p 3306:3306 --name cinema -d cinema_mysql
 ```
 
-Para interromper a execução dos containers, basta executar o comando:
+A inicialização do banco de dados pode ser um processo demorado, e é possível verificar seu status nos logs do container.
 
 ```bash
-$ docker stop cinema
+$ docker logs cinema
 ```
+
+A linha `[Server] /usr/sbin/mysqld: ready for connections. Version: '8.0.29' socket: '/var/run/mysqld/mysqld.sock' port: 3306 MySQL Community Server - GPL.` indica que o banco de dados está pronto para receber conexões.
 
 ### Executando a API
 
-A API pode ser executada com o npm.
+A API pode ser executada com npm.
 
 ```bash
 $ npm start
