@@ -1,9 +1,9 @@
 const database = require('./database');
 
 module.exports = {
-    getFilme: async () => {
+    getSala: async () => {
         return new Promise((resolve, reject) => {
-            const query = `SELECT * FROM filme;`
+            const query = `SELECT * FROM sala;`
     
             database.query(query, (err, res) => {
                 if (res) resolve(res);
@@ -12,9 +12,9 @@ module.exports = {
         });
     },
 
-    getFilmeId: async (id) => {
+    getSalaId: async (id) => {
         return new Promise((resolve, reject) => {
-            const query = `SELECT * FROM filme WHERE id=${id};`
+            const query = `SELECT * FROM sala WHERE id=${id};`
     
             database.query(query, (err, res) => {
                 if (res) resolve(res);
@@ -23,9 +23,9 @@ module.exports = {
         });
     },
 
-    createFilme: async (filme) => {
+    createSala: async (sala) => {
         return new Promise((resolve, reject) => {
-            const query = `INSERT INTO filme (titulo,imagem,descricao) values (${filme.titulo}, ${filme.imagem}, ${filme.descricao});`
+            const query = `INSERT INTO sala (filas,colunas,numero) values (${sala.filas}, ${sala.colunas}, ${sala.numero});`
     
             database.query(query, (err, res) => {
                 if (res) resolve(res);
@@ -34,9 +34,9 @@ module.exports = {
         });
     },
 
-    updateFilme: async (id, filme) => {
+    updateSala: async (id, sala) => {
         return new Promise((resolve, reject) => {
-            const query = `UPDATE filme SET titulo=${filme.titulo}, imagem=${filme.imagem}, descricao=${filme.descricao} WHERE id=${id};`
+            const query = `UPDATE filme SET filas=${sala.filas}, colunas=${sala.colunas}, numero=${sala.numero} WHERE id=${id};`
     
             database.query(query, (err, res) => {
                 if (res) resolve(res);
@@ -45,9 +45,9 @@ module.exports = {
         });
     },
 
-    deleteFilme: async (id) => {
+    deleteSala: async (id) => {
         return new Promise((resolve, reject) => {
-            const query = `DELETE FROM filme WHERE id=${id};`
+            const query = `DELETE FROM sala WHERE id=${id};`
     
             database.query(query, (err, res) => {
                 if (res) resolve(res);
