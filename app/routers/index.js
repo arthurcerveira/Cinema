@@ -1,13 +1,9 @@
-const express = require('express');
+const express = require('express')
 
-const controllers = require("./controllers/controllers")
+const filmeRouter = require('./filmeRouter')
 
-const router = express.Router();
+const router = express.Router()
 
-router.get('/', async (req, res) => res.json({
-    message: "Hello World"
-}));
+router.use(filmeRouter)
 
-router.get('/salas', controllers.getSalas);
-
-module.exports = router;
+module.exports = router
