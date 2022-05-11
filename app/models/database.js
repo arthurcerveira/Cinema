@@ -3,7 +3,7 @@ const { createPool } = require('mysql');
 const pool = createPool({
     user: 'admin',
     password: 'cinema',
-    database: 'cinema_dev',
+    database: 'cinema_dev', 
     host: 'localhost',
     port: 3306,
 });
