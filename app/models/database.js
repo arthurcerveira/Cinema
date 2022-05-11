@@ -1,17 +1,11 @@
-const { Pool } = require('pg');
+const { createPool } = require('mysql');
 
-const pool = new Pool({
+const pool = createPool({
     user: 'admin',
     password: 'cinema',
     database: 'cinema_dev',
-    host: 'db', // Docker-compose host for postgres
-    port: 5432,
-    options: '-c search_path=nave_schema',
+    host: 'localhost',
+    port: 3306,
 });
-
-// Set up DB tables
-fs.readFile('/usr/src/models/DDL.sql', 'utf8',
-  async (err, data) => pool.query(data)
-);
 
 module.exports = pool;

@@ -1,17 +1,11 @@
 # Download image
-FROM node:14-alpine
+FROM mysql:8.0
 
-WORKDIR /usr/src/
+ENV MYSQL_DATABASE cinema_dev
+ENV MYSQL_USER admin
+ENV MYSQL_PASSWORD cinema
+ENV MYSQL_ROOT_PASSWORD cinema
 
-# Install dependecies
-COPY ./package*.json ./
-RUN npm install
+COPY ./app/models/DDL.sql /docker-entrypoint-initdb.d/DDL.sql
 
-# Copy application to docker
-COPY ./app ./
-
-# 'ash' replaces 'bash' in alpine containers
-ENTRYPOINT [ "/bin/ash" ]
-
-# "wait-for" starts node container after PostgreSQL is set-up
-CMD [ "./wait-for", "db:5432", "--", "npm", "start"] 
+CMD ["mysqld", "--default-authentication-plugin=mysql_native_password"]
