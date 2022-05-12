@@ -31,7 +31,7 @@ module.exports = {
             const filme = req.body
             const adminid = parseInt(req.header('adminid'))
             if(!isNaN(adminid))
-                await helper.createHistorico(adminid, "inserir filme", filme)
+                await helper.createHistorico(adminid, "inserir filme - id_filme: "+retorno.insertId, filme)
 
             return res.json(retorno);
         } catch (err) {
@@ -46,7 +46,7 @@ module.exports = {
             const filme = req.body
             const adminid = parseInt(req.header('adminid'))
             if(!isNaN(adminid))
-                await helper.createHistorico(adminid, "atualizar filme", filme)
+                await helper.createHistorico(adminid, "atualizar filme - id_filme: "+req.params.id, filme)
 
             return res.json(retorno);
         } catch (err) {
