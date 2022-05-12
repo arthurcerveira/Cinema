@@ -28,5 +28,14 @@ module.exports = {
                 else reject(err)
             });
         });
-    }
+    },
+    getAll: async () => {
+        return new Promise((resolve, reject) => {
+            const query = `SELECT * FROM admin`
+            database.query(query, (err, res) => {
+                if (res) resolve(res);
+                else reject(err)
+            });
+        });
+    },
 }

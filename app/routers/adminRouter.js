@@ -10,7 +10,8 @@ const adminRouter = express.Router()
 //para adicionar um admin, descomente essa rota e sua função equivalente no adminController
 //adminRouter.post('/admin/', adminController.addAdmin) 
 
-adminRouter.get('/admin/:id', adminController.getHistoricoId)
+adminRouter.get('/admin/', adminController.getAll)
+adminRouter.get('/historico/:id', adminController.getHistoricoId)
 
 
 module.exports = adminRouter

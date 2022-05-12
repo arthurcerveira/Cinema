@@ -12,14 +12,15 @@ module.exports = {
             return res.json({ error: err });
         }
     },
-    /*addAdmin: async (req, res) => { //procced with caution
+    getAll: async (req, res) => {
         try {
-            const admin = await models.createAdmin(req.body.usuario, req.body.senha)
+            const admin = await models.getAll()
             return res.json(admin);
         } catch (err) {
             return res.json({ error: err });
         }
-    },*/
+    },
+    
     getHistoricoId: async (req, res) => {
         try {
             const admin = await models.getHistorico(req.params.id)
@@ -27,12 +28,11 @@ module.exports = {
         } catch (err) {
             return res.json({ error: err });
         }
-    },/*
-    testeHistorico: async (req, res) => {
+    },
+    /*addAdmin: async (req, res) => { //procced with caution
         try {
-            const adminid = 1
-            const log = await helper.createHistorico(adminid, 'inserir', 'filme titulo:morbius. ')
-            return res.json(log);
+            const admin = await models.createAdmin(req.body.usuario, req.body.senha)
+            return res.json(admin);
         } catch (err) {
             return res.json({ error: err });
         }
