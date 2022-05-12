@@ -13,6 +13,27 @@ module.exports = {
         }
     },
 
+    getCatalogo: async (req, res) => {
+        try {
+            //EU ODEIO DATAS DO FUNDO DO MEU CORAÇÃO
+            const hoje = new Date()
+
+            const hojeNovo = new Date(hoje.getFullYear(), hoje.getMonth(), hoje.getDate(), hoje.getHours() - 3, 59, 58);
+            const hojeFormatado = hojeNovo.toISOString().slice(0, 19).replace('T', ' ').replaceAll('/', '-')
+
+
+            const nextWeek = new Date(hoje.getFullYear(), hoje.getMonth(), hoje.getDate() + 7, 20, 59, 58);
+            const nextWeekFormatado = nextWeek.toISOString().slice(0, 19).replace('T', ' ').replaceAll('/', '-')
+
+            const retorno = await models.getCatalogo(hojeFormatado, nextWeekFormatado); 
+    
+            return res.json(retorno);
+        } catch (err) {
+            console.log(err)
+            return res.json({ error: err });
+        }
+    },
+
     getSessaoId: async (req, res) => {
         try {
             const retorno = await models.getSessaoId(req.params.id); 

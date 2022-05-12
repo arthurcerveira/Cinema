@@ -14,7 +14,18 @@ module.exports = {
 
     getSessaoId: async (id) => {
         return new Promise((resolve, reject) => {
-            const query = `SELECT * FROM sessao WHERE id=${id};`
+            const query = `SELECT * FROM sessao JOIN sala ON sessao.sala_id=sala.id JOIN filme ON sessao.filme_id=filme.id WHERE id=${id};`
+    
+            database.query(query, (err, res) => {
+                if (res) resolve(res);
+                else reject(err)
+            });
+        });
+    },
+
+    getCatalogo: async (hoje, proxSemana) => {
+        return new Promise((resolve, reject) => {
+            const query = `SELECT * FROM sessao JOIN sala ON sessao.sala_id=sala.id JOIN filme ON sessao.filme_id=filme.id WHERE horario>="${hoje}" AND horario<="${proxSemana}";`
     
             database.query(query, (err, res) => {
                 if (res) resolve(res);

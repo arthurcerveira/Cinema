@@ -22,6 +22,17 @@ module.exports = {
         }
     },
 
+    getNumero: async (req, res) => {
+        try {
+            const retorno = await models.getNumero(req.params.numero); 
+    
+            return res.json(retorno);
+        } catch (err) {
+            return res.json({ error: err });
+        }
+    },
+
+
     createSala: async (req, res) => {
         try {
             const retorno = await models.createSala(req.body); 

@@ -24,6 +24,17 @@ module.exports = {
         }
     },
 
+    getTitulo: async (req, res) => {
+        try {
+            const retorno = await models.getTitulo(req.params.titulo); 
+    
+           return res.json(retorno);
+        } catch (err) {
+            console.log(err)
+            return res.json({ error: err });
+        }
+    },
+
     createFilme: async (req, res) => {
         try {
             
@@ -33,10 +44,10 @@ module.exports = {
             if(!isNaN(adminid))
                 await helper.createHistorico(adminid, "inserir filme - id_filme: "+retorno.insertId, filme)
 
-            return res.json(retorno);
+            return res.json({'Status':'success'});
         } catch (err) {
             console.log(err)
-            return res.json({ error: err });
+            return res.json({ error: err.toString() });
         }
     },
     

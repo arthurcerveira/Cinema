@@ -22,6 +22,16 @@ module.exports = {
             });
         });
     },
+    getNumero: async (id) => {
+        return new Promise((resolve, reject) => {
+            const query = `SELECT * FROM sala WHERE numero=${id};`
+    
+            database.query(query, (err, res) => {
+                if (res) resolve(res);
+                else reject(err)
+            });
+        });
+    },
 
     createSala: async (sala) => {
         return new Promise((resolve, reject) => {

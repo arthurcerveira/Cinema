@@ -22,6 +22,16 @@ module.exports = {
             });
         });
     },
+    getTitulo: async (titulo) => {
+        return new Promise((resolve, reject) => {
+            const query = `SELECT * FROM filme WHERE titulo=${titulo};`
+    
+            database.query(query, (err, res) => {
+                if (res) resolve(res);
+                else reject(err)
+            });
+        });
+    },
 
     createFilme: async (filme) => {
         return new Promise((resolve, reject) => {

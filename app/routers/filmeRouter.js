@@ -5,6 +5,7 @@ const filmeController = require('../controllers/filmeController')
 const filmeRouter = express.Router()
 
 filmeRouter.get('/filme/', filmeController.getFilme)
+filmeRouter.get('/filme/titulo/:titulo', filmeController.getTitulo)
 filmeRouter.get('/filme/:id', filmeController.getFilmeId)
 filmeRouter.put('/filme/:id', filmeController.updateFilme)
 filmeRouter.post('/filme/', filmeController.createFilme)
