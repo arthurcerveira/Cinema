@@ -25,8 +25,7 @@ module.exports = {
 
     createFilme: async (filme) => {
         return new Promise((resolve, reject) => {
-            const query = `INSERT INTO filme (titulo,imagem,descricao) values (${filme.titulo}, ${filme.imagem}, ${filme.descricao});`
-    
+            const query = `INSERT INTO filme (titulo, imagem, descricao) values ("${filme.titulo}", "${filme.imagem}", "${filme.descricao}");`    
             database.query(query, (err, res) => {
                 if (res) resolve(res);
                 else reject(err)
@@ -36,7 +35,7 @@ module.exports = {
 
     updateFilme: async (id, filme) => {
         return new Promise((resolve, reject) => {
-            const query = `UPDATE filme SET titulo=${filme.titulo}, imagem=${filme.imagem}, descricao=${filme.descricao} WHERE id=${id};`
+            const query = `UPDATE filme SET titulo="${filme.titulo}", imagem="${filme.imagem}", descricao="${filme.descricao}" WHERE id=${id};`
     
             database.query(query, (err, res) => {
                 if (res) resolve(res);

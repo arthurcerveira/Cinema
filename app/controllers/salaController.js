@@ -1,4 +1,4 @@
-const models = require('../models/models');
+const models = require('../models/salaModel');
 
 module.exports = {
     getSala: async (req, res) => {
@@ -43,7 +43,7 @@ module.exports = {
 
     deleteSala: async (req, res) => {
         try {
-            const retorno = await models.deleteSala(); 
+            const retorno = await models.deleteSala(req.params.id); 
     
             return res.json(retorno);
         } catch (err) {

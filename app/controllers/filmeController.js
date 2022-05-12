@@ -1,4 +1,4 @@
-const models = require('../models/models');
+const models = require('../models/filmeModel');
 
 module.exports = {
     getFilme: async (req, res) => {
@@ -15,7 +15,7 @@ module.exports = {
         try {
             const retorno = await models.getFilmeId(req.params.id); 
     
-            return res.json(retorno);
+           return res.json(retorno[0]);
         } catch (err) {
             return res.json({ error: err });
         }
@@ -23,8 +23,9 @@ module.exports = {
 
     createFilme: async (req, res) => {
         try {
-            const retorno = await models.createFilme(req.body); 
-    
+            const data = req.body
+            const retorno = await models.createFilme(data); 
+               
             return res.json(retorno);
         } catch (err) {
             return res.json({ error: err });
@@ -43,7 +44,7 @@ module.exports = {
 
     deleteFilme: async (req, res) => {
         try {
-            const retorno = await models.deleteFilme(); 
+            const retorno = await models.deleteFilme(req.params.id); 
     
             return res.json(retorno);
         } catch (err) {
