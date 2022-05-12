@@ -1,4 +1,5 @@
 const models = require('../models/salaModel');
+const helper = require('../helper')
 
 module.exports = {
     getSala: async (req, res) => {
