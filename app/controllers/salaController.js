@@ -25,10 +25,10 @@ module.exports = {
     createSala: async (req, res) => {
         try {
             const retorno = await models.createSala(req.body); 
-            
+            const sala = req.body
             const adminid = parseInt(req.header('adminid'))
             if(!isNaN(adminid))
-                await helper.createHistorico(adminid, "criar sala", req.body)
+                await helper.createHistorico(adminid, "criar sala", sala)
 
             return res.json(retorno);
         } catch (err) {
@@ -39,10 +39,10 @@ module.exports = {
     updateSala: async (req, res) => {
         try {
             const retorno = await models.updateSala(req.params.id, req.body); 
-    
+            const sala = req.body
             const adminid = parseInt(req.header('adminid'))
             if(!isNaN(adminid))
-                await helper.createHistorico(adminid, "atualizar sala", req.body)
+                await helper.createHistorico(adminid, "atualizar sala", sala)
 
             return res.json(retorno);
         } catch (err) {

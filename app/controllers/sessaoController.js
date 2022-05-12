@@ -32,7 +32,7 @@ module.exports = {
             
             const adminid = parseInt(req.header('adminid'))
             if(!isNaN(adminid))
-                await helper.createHistorico(adminid, "criar sala", data)
+                await helper.createHistorico(adminid, "criar sessao", data)
 
             return res.json(retorno);
         } catch (err) {

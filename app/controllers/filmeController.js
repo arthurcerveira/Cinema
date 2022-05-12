@@ -28,10 +28,10 @@ module.exports = {
         try {
             
             const retorno = await models.createFilme(req.body);   
-            
+            const filme = req.body
             const adminid = parseInt(req.header('adminid'))
             if(!isNaN(adminid))
-                await helper.createHistorico(adminid, "inserir filme", req.body)
+                await helper.createHistorico(adminid, "inserir filme", filme)
 
             return res.json(retorno);
         } catch (err) {
@@ -43,10 +43,10 @@ module.exports = {
     updateFilme: async (req, res) => {
         try {
             const retorno = await models.updateFilme(req.params.id, req.body); 
-
+            const filme = req.body
             const adminid = parseInt(req.header('adminid'))
             if(!isNaN(adminid))
-                await helper.createHistorico(adminid, "atualizar filme", req.body)
+                await helper.createHistorico(adminid, "atualizar filme", filme)
 
             return res.json(retorno);
         } catch (err) {
