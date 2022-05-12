@@ -26,12 +26,11 @@ module.exports = {
     createFilme: async (req, res) => {
         try {
             
-            const data = req.body
-            const retorno = await models.createFilme(data);   
+            const retorno = await models.createFilme(req.body);   
             
             const adminid = parseInt(req.header('adminid'))
             if(!isNaN(adminid))
-                await helper.createHistorico(adminid, "inserir filme", data)
+                await helper.createHistorico(adminid, "inserir filme", req.body)
 
             return res.json(retorno);
         } catch (err) {
@@ -44,6 +43,10 @@ module.exports = {
         try {
             const retorno = await models.updateFilme(req.params.id, req.body); 
 
+            const adminid = parseInt(req.header('adminid'))
+            if(!isNaN(adminid))
+                await helper.createHistorico(adminid, "atualizar filme", req.body)
+
             return res.json(retorno);
         } catch (err) {
             return res.json({ error: err });
@@ -54,6 +57,16 @@ module.exports = {
         try {
             const retorno = await models.deleteFilme(req.params.id); 
     
+            /*
+            TODO: buscar os dados do filme do banco de dados (filmeModel) 
+            para inserir no local do req.body como histórico
+
+
+            const adminid = parseInt(req.header('adminid'))
+            if(!isNaN(adminid))
+                await helper.createHistorico(adminid, "deletar filme", dadosDoFilmeDeletadoAqui)
+            */
+
             return res.json(retorno);
         } catch (err) {
             return res.json({ error: err });
