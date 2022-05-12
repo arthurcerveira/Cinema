@@ -29,13 +29,13 @@ module.exports = {
             return res.json({ error: err });
         }
     },
-    /*addAdmin: async (req, res) => { //procced with caution
+    addAdmin: async (req, res) => { //procced with caution
         try {
             const admin = await models.createAdmin(req.body.usuario, req.body.senha)
             return res.json(admin);
         } catch (err) {
             return res.json({ error: err });
         }
-    },*/
+    },
 }
   

@@ -4,11 +4,11 @@ const helper = require('../helper')
 module.exports = {
     getFilme: async (req, res) => {
         try {
-            const adminid = req.header('adminid')
             const retorno = await models.getFilme(); 
     
             return res.json(retorno);
         } catch (err) {
+            console.log(err)
             return res.json({ error: err });
         }
     },
@@ -19,6 +19,7 @@ module.exports = {
     
            return res.json(retorno[0]);
         } catch (err) {
+            console.log(err)
             return res.json({ error: err });
         }
     },
@@ -49,6 +50,7 @@ module.exports = {
 
             return res.json(retorno);
         } catch (err) {
+            console.log(err)
             return res.json({ error: err });
         }
     },
@@ -69,6 +71,7 @@ module.exports = {
 
             return res.json(retorno);
         } catch (err) {
+            console.log(err)
             return res.json({ error: err });
         }
     },
