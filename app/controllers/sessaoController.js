@@ -8,8 +8,7 @@ module.exports = {
     
             return res.json(retorno);
         } catch (err) {
-            console.log(err)
-            return res.json({ error: err });
+            return res.json({ error: err.toString() });
         }
     },
 
@@ -29,8 +28,7 @@ module.exports = {
     
             return res.json(retorno);
         } catch (err) {
-            console.log(err)
-            return res.json({ error: err });
+            return res.json({ error: err.toString() });
         }
     },
 
@@ -40,7 +38,7 @@ module.exports = {
     
             return res.json(retorno);
         } catch (err) {
-            return res.json({ error: err });
+            return res.json({ error: err.toString() });
         }
     },
 
@@ -55,10 +53,9 @@ module.exports = {
             if(!isNaN(adminid))
                 await helper.createHistorico(adminid, "criar sessao - id_sessao: "+retorno.insertId, data)
 
-            return res.json(retorno);
+            return res.json({'Status':'success'});
         } catch (err) {
-            console.log(err)
-            return res.json({ error: err });
+            return res.json({ error: err.toString() });
         }
     },
     
@@ -73,9 +70,9 @@ module.exports = {
             if(!isNaN(adminid))
                 await helper.createHistorico(adminid, "atualizar sessao - id_sessao: "+req.params.id, data)
 
-            return res.json(retorno);
+            return res.json({'Status':'success'});
         } catch (err) {
-            return res.json({ error: err });
+            return res.json({ error: err.toString() });
         }
     },
 
@@ -92,9 +89,9 @@ module.exports = {
             if(!isNaN(adminid))
                 await helper.createHistorico(adminid, "deletar sessao", dadosDaSessaoDeletadaAqui)
             */
-            return res.json(retorno);
+            return res.json({'Status':'success'});
         } catch (err) {
-            return res.json({ error: err });
+            return res.json({ error: err.toString() });
         }
     },
 }

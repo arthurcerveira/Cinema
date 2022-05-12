@@ -8,7 +8,7 @@ module.exports = {
     
             return res.json(retorno);
         } catch (err) {
-            return res.json({ error: err });
+            return res.json({ error: err.toString() });
         }
     },
 
@@ -18,7 +18,7 @@ module.exports = {
     
             return res.json(retorno);
         } catch (err) {
-            return res.json({ error: err });
+            return res.json({ error: err.toString() });
         }
     },
 
@@ -28,7 +28,7 @@ module.exports = {
     
             return res.json(retorno);
         } catch (err) {
-            return res.json({ error: err });
+            return res.json({ error: err.toString() });
         }
     },
 
@@ -41,9 +41,9 @@ module.exports = {
             if(!isNaN(adminid))
                 await helper.createHistorico(adminid, "criar sala - id_sala: "+retorno.insertId, sala)
 
-            return res.json(retorno);
+            return res.json({'Status':'success'});
         } catch (err) {
-            return res.json({ error: err });
+            return res.json({ error: err.toString() });
         }
     },
     
@@ -55,9 +55,9 @@ module.exports = {
             if(!isNaN(adminid))
                 await helper.createHistorico(adminid, "atualizar sala - id_sala: "+req.params.id, sala)
 
-            return res.json(retorno);
+            return res.json({'Status':'success'});
         } catch (err) {
-            return res.json({ error: err });
+            return res.json({ error: err.toString() });
         }
     },
 
@@ -74,9 +74,9 @@ module.exports = {
             if(!isNaN(adminid))
                 await helper.createHistorico(adminid, "deletar sala", dadosDaSalaDeletadaAqui)
             */
-            return res.json(retorno);
+            return res.json({'Status':'success'});
         } catch (err) {
-            return res.json({ error: err });
+            return res.json({ error: err.toString() });
         }
     },
 }

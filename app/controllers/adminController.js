@@ -9,7 +9,7 @@ module.exports = {
 
             return res.json('wip');
         } catch (err) {
-            return res.json({ error: err });
+            return res.json({ error: err.toString() });
         }
     },
     getAll: async (req, res) => {
@@ -17,7 +17,7 @@ module.exports = {
             const admin = await models.getAll()
             return res.json(admin);
         } catch (err) {
-            return res.json({ error: err });
+            return res.json({ error: err.toString() });
         }
     },
     
@@ -26,7 +26,7 @@ module.exports = {
             const admin = await models.getHistorico(req.params.id)
             return res.json(admin);
         } catch (err) {
-            return res.json({ error: err });
+            return res.json({ error: err.toString() });
         }
     },
     addAdmin: async (req, res) => { //procced with caution
@@ -34,7 +34,7 @@ module.exports = {
             const admin = await models.createAdmin(req.body.usuario, req.body.senha)
             return res.json(admin);
         } catch (err) {
-            return res.json({ error: err });
+            return res.json({ error: err.toString() });
         }
     },
 }

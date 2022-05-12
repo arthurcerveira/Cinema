@@ -7,7 +7,7 @@ module.exports = {
     
             return res.json(salas);
         } catch (err) {
-            return res.json({ error: err });
+            return res.json({ error: err.toString() });
         }
     }
 }

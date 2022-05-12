@@ -8,8 +8,7 @@ module.exports = {
     
             return res.json(retorno);
         } catch (err) {
-            console.log(err)
-            return res.json({ error: err });
+            return res.json({ error: err.toString() });
         }
     },
 
@@ -19,8 +18,7 @@ module.exports = {
     
            return res.json(retorno[0]);
         } catch (err) {
-            console.log(err)
-            return res.json({ error: err });
+            return res.json({ error: err.toString() });
         }
     },
 
@@ -30,8 +28,7 @@ module.exports = {
     
            return res.json(retorno);
         } catch (err) {
-            console.log(err)
-            return res.json({ error: err });
+            return res.json({ error: err.toString() });
         }
     },
 
@@ -46,7 +43,6 @@ module.exports = {
 
             return res.json({'Status':'success'});
         } catch (err) {
-            console.log(err)
             return res.json({ error: err.toString() });
         }
     },
@@ -59,10 +55,9 @@ module.exports = {
             if(!isNaN(adminid))
                 await helper.createHistorico(adminid, "atualizar filme - id_filme: "+req.params.id, filme)
 
-            return res.json(retorno);
+            return res.json({'Status':'success'});
         } catch (err) {
-            console.log(err)
-            return res.json({ error: err });
+            return res.json({ error: err.toString() });
         }
     },
 
@@ -80,10 +75,9 @@ module.exports = {
                 await helper.createHistorico(adminid, "deletar filme", dadosDoFilmeDeletadoAqui)
             */
 
-            return res.json(retorno);
+            return res.json({'Status':'success'});
         } catch (err) {
-            console.log(err)
-            return res.json({ error: err });
+            return res.json({ error: err.toString() });
         }
     },
 }
