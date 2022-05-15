@@ -7,6 +7,9 @@ env.config()
 module.exports = {
 
     createToken: ( params = {}) => {
-        return jwt.sign(params, process.env.SECRET)
-    }
+        return jwt.sign(params, process.env.SECRET, { 
+            expiresIn: 300 // 5min 
+        })
+    },
+    
 }
