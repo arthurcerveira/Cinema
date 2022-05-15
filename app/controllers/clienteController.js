@@ -3,14 +3,14 @@ const { hashPass, compareHash } = require('../helpers/bcrypt')
 const { createToken } = require('../helpers/jwt-token')
 
 module.exports = {
-
-    getClientes: async (req, res) => {
+    getCliente: async (req, res) => {
         try {
-            const Clientes = await models.getCliente()
+            const retorno = await models.getCliente(); 
     
-            return res.json(Clientes)
+            return res.json(retorno);
         } catch (err) {
-            return res.json({ error: err })
+            return res.json({ error: err.toString() });
+
         }
     },
 
@@ -62,4 +62,25 @@ module.exports = {
 
     },
 
+    
+    updateCliente: async (req, res) => {
+        try {
+            const data = req.body
+            const retorno = await models.updateCliente(req.params.id, data); 
+
+            return res.json(retorno);
+        } catch (err) {
+            return res.json({ error: err });
+        }
+    },
+
+    deleteCliente: async (req, res) => {
+        try {
+            const retorno = await models.deleteCliente(req.params.id); 
+    
+            return res.json(retorno);
+        } catch (err) {
+            return res.json({ error: err });
+        }
+    },
 }
