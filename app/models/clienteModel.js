@@ -24,6 +24,18 @@ module.exports = {
     },
 
 
+    getClienteEmail: async (email) => {
+        return new Promise((resolve, reject) => {
+            const query = `SELECT * FROM cliente WHERE email='${email}';`
+    
+            database.query(query, (err, res) => {
+                if (res) resolve(res);
+                else reject(err)
+            });
+        });
+    },
+
+
     createCliente: async (cliente) => {
         return new Promise((resolve, reject) => {
             const query = `INSERT INTO cliente (nome, email, senha) values ("${cliente.nome}", "${cliente.email}", "${cliente.senha}");`    
@@ -34,10 +46,10 @@ module.exports = {
         });
     },
 
-    updateCliente: async (id, sessao) => {
+
+    updateCliente: async (id, cliente) => {
         return new Promise((resolve, reject) => {
-            const query = `UPDATE cliente SET nome=${cliente.nome}, email=${cliente.email}, senha=${cliente.senha}, pontos=${cliente.pontos}, data_criacao="${cliente.data_criacao}" WHERE id=${id};`
-    
+            const query = `UPDATE cliente SET nome=${cliente.nome}, email=${cliente.email}, senha=${cliente.senha}, pontos=${cliente.pontos} WHERE id=${id};`
             database.query(query, (err, res) => {
                 if (res) resolve(res);
                 else reject(err)

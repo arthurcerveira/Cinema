@@ -1,5 +1,5 @@
 const models = require('../models/sessaoModel');
-const helper = require('../helper')
+const helper = require('../helpers/helper')
 
 module.exports = {
     getSessao: async (req, res) => {

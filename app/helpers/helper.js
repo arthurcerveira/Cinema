@@ -1,4 +1,4 @@
-const models = require('./models/adminModel');
+const models = require('../models/adminModel');
 
 module.exports = {
     createHistorico: async (admin, acao, alvo) => {
