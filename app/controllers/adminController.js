@@ -1,5 +1,5 @@
 const models = require('../models/adminModel');
-const helper = require('../helper')
+const helper = require('../helpers/helper')
 module.exports = {
     login: async (req, res) => {
         try {

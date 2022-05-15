@@ -1,5 +1,5 @@
 const models = require('../models/filmeModel');
-const helper = require('../helper')
+const helper = require('../helpers/helper')
 
 module.exports = {
     getFilme: async (req, res) => {

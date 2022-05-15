@@ -1,5 +1,5 @@
 const models = require('../models/salaModel');
-const helper = require('../helper')
+const helper = require('../helpers/helper')
 
 module.exports = {
     getSala: async (req, res) => {
