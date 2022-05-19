@@ -11,6 +11,27 @@ module.exports = {
             });
         });
     },
+    getFilmeCont: async () => {
+        return new Promise((resolve, reject) => {
+            const query = `SELECT COUNT(*) FROM filme`
+    
+            database.query(query, (err, res) => {
+                if (res) resolve(res);
+                else reject(err)
+            });
+        });
+    },
+
+    getFilmeStatus: async (status) => {
+        return new Promise((resolve, reject) => {
+            const query = `SELECT * FROM filme WHERE status=${status};`
+    
+            database.query(query, (err, res) => {
+                if (res) resolve(res);
+                else reject(err)
+            });
+        });
+    },
 
     getFilmeId: async (id) => {
         return new Promise((resolve, reject) => {
@@ -23,10 +44,9 @@ module.exports = {
         });
     },
 
-    getFilmePag: async (pag) => {
+    getFilmePag: async (limit, offset) => {
         return new Promise((resolve, reject) => {
-            const pagsize = parseInt(pag) * 10
-            const query = `SELECT * FROM filme ORDER BY titulo LIMIT ${pagsize}, 10;`
+            const query = `SELECT * FROM filme ORDER BY titulo LIMIT ${offset}, ${limit};`
     
             database.query(query, (err, res) => {
                 if (res) resolve(res);
@@ -37,7 +57,7 @@ module.exports = {
 
     createFilme: async (filme) => {
         return new Promise((resolve, reject) => {
-            const query = `INSERT INTO filme (titulo, imagem, descricao) values ("${filme.titulo}", "${filme.imagem}", "${filme.descricao}");`    
+            const query = `INSERT INTO filme (titulo, imagem, status, descricao) values ("${filme.titulo}", "${filme.imagem}", ${filme.status}, "${filme.descricao}");`    
             database.query(query, (err, res) => {
                 if (res) resolve(res);
                 else reject(err)

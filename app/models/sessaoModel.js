@@ -23,10 +23,20 @@ module.exports = {
         });
     },
 
-    getSessaoPag: async (pag) => {
+    getSessaoCont: async () => {
         return new Promise((resolve, reject) => {
-            const pagsize = parseInt(pag) * 10
-            const query = `SELECT * FROM sessao ORDER BY UNIX_TIMESTAMP(horario) LIMIT ${pagsize}, 10;`
+            const query = `SELECT COUNT(*) FROM sessao`
+    
+            database.query(query, (err, res) => {
+                if (res) resolve(res);
+                else reject(err)
+            });
+        });
+    },
+ 
+    getSessaoPag: async (limit, offset) => {
+        return new Promise((resolve, reject) => {
+            const query = `SELECT * FROM sessao JOIN sala ON sessao.sala_id=sala.id JOIN filme ON sessao.filme_id=filme.id ORDER BY UNIX_TIMESTAMP(horario) LIMIT ${offset}, ${limit};`
     
             database.query(query, (err, res) => {
                 if (res) resolve(res);

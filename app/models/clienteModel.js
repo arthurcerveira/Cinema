@@ -11,7 +11,26 @@ module.exports = {
             });
         });
     },
-
+    getClienteCont: async () => {
+        return new Promise((resolve, reject) => {
+            const query = `SELECT COUNT(*) FROM cliente`
+    
+            database.query(query, (err, res) => {
+                if (res) resolve(res);
+                else reject(err)
+            });
+        });
+    },
+    getClientePag: async (limit, offset) => {
+        return new Promise((resolve, reject) => {
+            const query = `SELECT * FROM cliente ORDER BY UNIX_TIMESTAMP(data_criacao) DESC LIMIT ${offset}, ${limit};`
+    
+            database.query(query, (err, res) => {
+                if (res) resolve(res);
+                else reject(err)
+            });
+        });
+    },
     getClienteId: async (id) => {
         return new Promise((resolve, reject) => {
             const query = `SELECT * FROM cliente WHERE id=${id};`

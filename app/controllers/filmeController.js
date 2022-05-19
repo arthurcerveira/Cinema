@@ -4,9 +4,20 @@ const helper = require('../helpers/helper')
 module.exports = {
     getFilme: async (req, res) => {
         try {
-            const adminid = req.header('adminid')
-            const retorno = await models.getFilme(); 
-    
+            let retorno
+            
+            
+            if(req.query.status)
+                retorno = await models.getFilmeStatus(req.query.status)
+            else if(!req.query.limit && !req.query.offset)
+                retorno = await models.getFilme()
+            else
+            retorno = {
+                data: await models.getFilmePag(req.query.limit, req.query.offset),
+                limit: req.query.limit,
+                total: (await models.getFilmeCont())[0]['COUNT(*)']
+            }     
+
             return res.json(retorno);
         } catch (err) {
             return res.json({ error: err });
@@ -24,7 +35,8 @@ module.exports = {
     },
     getFilmePag: async (req, res) => {
         try {
-            const retorno = await models.getFilmePag(req.params.pag); 
+
+            //?limit=12&offset=24
     
            return res.json(retorno);
         } catch (err) {
