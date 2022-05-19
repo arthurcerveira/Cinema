@@ -5,6 +5,8 @@ const sessaoController = require('../controllers/sessaoController.js')
 const sessaoRouter = express.Router()
 
 sessaoRouter.get('/sessao/', sessaoController.getSessao)
+sessaoRouter.get('/catalogo/', sessaoController.getCatalogo)
+sessaoRouter.get('/sessao/pag/:pag', sessaoController.getSessaoPag)
 sessaoRouter.get('/sessao/:id', sessaoController.getSessaoId)
 sessaoRouter.put('/sessao/:id', sessaoController.updateSessao)
 sessaoRouter.post('/sessao/', sessaoController.createSessao)

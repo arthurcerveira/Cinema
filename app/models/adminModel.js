@@ -3,7 +3,17 @@ const database = require('./database');
 module.exports = {
     getHistorico: async (id) => {
         return new Promise((resolve, reject) => {
-            const query = `SELECT * FROM historico WHERE admin_id=${id};`
+            const query = `SELECT * FROM historico WHERE admin_id=${id} ORDER BY UNIX_TIMESTAMP(data) DESC;`
+            database.query(query, (err, res) => {
+                if (res) resolve(res);
+                else reject(err)
+            });
+        });
+    },
+    getHistoricoPag: async (id, pag) => {
+        return new Promise((resolve, reject) => {
+            const pagsize = pag * 10
+            const query = `SELECT * FROM historico WHERE admin_id=${id} ORDER BY UNIX_TIMESTAMP(data) DESC LIMIT ${pagsize}, 10;`
             database.query(query, (err, res) => {
                 if (res) resolve(res);
                 else reject(err)

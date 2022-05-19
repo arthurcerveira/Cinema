@@ -22,6 +22,16 @@ module.exports = {
         }
     },
 
+    getSalaPag: async (req, res) => {
+        try {
+            const retorno = await models.getSalaPag(req.params.pag); 
+    
+           return res.json(retorno);
+        } catch (err) {
+            return res.json({ error: err });
+        }
+    },
+
     createSala: async (req, res) => {
         try {
             const retorno = await models.createSala(req.body); 

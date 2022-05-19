@@ -12,6 +12,7 @@ const adminRouter = express.Router()
 
 adminRouter.get('/admin/', adminController.getAll)
 adminRouter.get('/historico/:id', adminController.getHistoricoId)
+adminRouter.get('/historico/pag/:id/:pag', adminController.getHistoricoPag)
 
 
 module.exports = adminRouter

@@ -23,6 +23,19 @@ module.exports = {
         });
     },
 
+    getSalaPag: async (pag) => {
+        return new Promise((resolve, reject) => {
+            const pagsize = parseInt(pag) * 10
+            const query = `SELECT * FROM sala ORDER BY numero LIMIT ${pagsize}, 10;`
+    
+            database.query(query, (err, res) => {
+                if (res) resolve(res);
+                else reject(err)
+            });
+        });
+    },
+
+
     createSala: async (sala) => {
         return new Promise((resolve, reject) => {
             const query = `INSERT INTO sala (filas,colunas,numero) values (${sala.filas}, ${sala.colunas}, ${sala.numero});`

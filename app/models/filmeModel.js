@@ -23,6 +23,18 @@ module.exports = {
         });
     },
 
+    getFilmePag: async (pag) => {
+        return new Promise((resolve, reject) => {
+            const pagsize = parseInt(pag) * 10
+            const query = `SELECT * FROM filme ORDER BY titulo LIMIT ${pagsize}, 10;`
+    
+            database.query(query, (err, res) => {
+                if (res) resolve(res);
+                else reject(err)
+            });
+        });
+    },
+
     createFilme: async (filme) => {
         return new Promise((resolve, reject) => {
             const query = `INSERT INTO filme (titulo, imagem, descricao) values ("${filme.titulo}", "${filme.imagem}", "${filme.descricao}");`    

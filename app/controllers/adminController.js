@@ -29,6 +29,14 @@ module.exports = {
             return res.json({ error: err });
         }
     },
+    getHistoricoPag: async (req, res) => {
+        try {
+            const admin = await models.getHistoricoPag(req.params.id, req.params.pag)
+            return res.json(admin);
+        } catch (err) {
+            return res.json({ error: err });
+        }
+    },
     /*addAdmin: async (req, res) => { //procced with caution
         try {
             const admin = await models.createAdmin(req.body.usuario, req.body.senha)

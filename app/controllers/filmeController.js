@@ -22,6 +22,15 @@ module.exports = {
             return res.json({ error: err });
         }
     },
+    getFilmePag: async (req, res) => {
+        try {
+            const retorno = await models.getFilmePag(req.params.pag); 
+    
+           return res.json(retorno);
+        } catch (err) {
+            return res.json({ error: err });
+        }
+    },
 
     createFilme: async (req, res) => {
         try {
