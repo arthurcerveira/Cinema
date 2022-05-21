@@ -32,15 +32,6 @@ module.exports = {
       return res.json({ error: err.toString() });
     }
   },
-  getFilmePag: async (req, res) => {
-    try {
-      //?limit=12&offset=24
-
-      return res.json(retorno);
-    } catch (err) {
-      return res.json({ error: err.toString() });
-    }
-  },
 
   createFilme: async (req, res) => {
     try {
