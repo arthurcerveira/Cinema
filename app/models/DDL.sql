@@ -108,7 +108,10 @@ DROP TABLE IF EXISTS `cinema_dev`.`filme` ;
 CREATE TABLE IF NOT EXISTS `cinema_dev`.`filme` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `titulo` VARCHAR(100) NOT NULL,
-  `imagem` VARCHAR(100) NULL,
+  `imagem` VARCHAR(500) NULL,
+  `idade_min` VARCHAR(10) NULL,
+  `genero` VARCHAR(100) NULL,
+  `status` INT UNSIGNED NOT NULL,
   `descricao` VARCHAR(400) NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE)
