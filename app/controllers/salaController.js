@@ -4,8 +4,16 @@ const helper = require('../helpers/helper')
 module.exports = {
     getSala: async (req, res) => {
         try {
-            const retorno = await models.getSala(); 
-    
+            let retorno 
+            if(!req.query.limit && !req.query.offset){
+                retorno = await models.getSala(); 
+            }                 
+            else retorno = {
+                data: await models.getSalaPag(req.query.limit, req.query.offset),
+                limit: req.query.limit,
+                total: (await models.getSalaCont())[0]['COUNT(*)']
+            }     
+
             return res.json(retorno);
         } catch (err) {
             return res.json({ error: err });
@@ -21,6 +29,7 @@ module.exports = {
             return res.json({ error: err });
         }
     },
+
 
     createSala: async (req, res) => {
         try {

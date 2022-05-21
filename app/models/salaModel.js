@@ -22,6 +22,28 @@ module.exports = {
             });
         });
     },
+    getSalaCont: async () => {
+        return new Promise((resolve, reject) => {
+            const query = `SELECT COUNT(*) FROM sala`
+    
+            database.query(query, (err, res) => {
+                if (res) resolve(res);
+                else reject(err)
+            });
+        });
+    },
+
+    getSalaPag: async (limit, offset) => {
+        return new Promise((resolve, reject) => {
+            const query = `SELECT * FROM sala ORDER BY numero LIMIT ${offset}, ${limit};`
+    
+            database.query(query, (err, res) => {
+                if (res) resolve(res);
+                else reject(err)
+            });
+        });
+    },
+
 
     createSala: async (sala) => {
         return new Promise((resolve, reject) => {

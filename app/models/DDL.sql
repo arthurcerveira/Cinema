@@ -109,6 +109,7 @@ CREATE TABLE IF NOT EXISTS `cinema_dev`.`filme` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `titulo` VARCHAR(100) NOT NULL,
   `imagem` VARCHAR(100) NULL,
+  `status` INT UNSIGNED NOT NULL,
   `descricao` VARCHAR(400) NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE)

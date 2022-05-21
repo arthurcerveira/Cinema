@@ -23,6 +23,39 @@ module.exports = {
         });
     },
 
+    getSessaoCont: async () => {
+        return new Promise((resolve, reject) => {
+            const query = `SELECT COUNT(*) FROM sessao`
+    
+            database.query(query, (err, res) => {
+                if (res) resolve(res);
+                else reject(err)
+            });
+        });
+    },
+ 
+    getSessaoPag: async (limit, offset) => {
+        return new Promise((resolve, reject) => {
+            const query = `SELECT * FROM sessao JOIN sala ON sessao.sala_id=sala.id JOIN filme ON sessao.filme_id=filme.id ORDER BY UNIX_TIMESTAMP(horario) LIMIT ${offset}, ${limit};`
+    
+            database.query(query, (err, res) => {
+                if (res) resolve(res);
+                else reject(err)
+            });
+        });
+    },
+
+    getCatalogo: async (hoje, proxSemana) => {
+        return new Promise((resolve, reject) => {
+            const query = `SELECT * FROM sessao JOIN sala ON sessao.sala_id=sala.id JOIN filme ON sessao.filme_id=filme.id WHERE horario>="${hoje}" AND horario<="${proxSemana}";`
+    
+            database.query(query, (err, res) => {
+                if (res) resolve(res);
+                else reject(err)
+            });
+        });
+    },
+
     createSessao: async (sessao) => {
         return new Promise((resolve, reject) => {
             const query = `INSERT INTO sessao (sala_id, filme_id, horario) values (${sessao.sala_id}, ${sessao.filme_id}, "${sessao.horario}");`    

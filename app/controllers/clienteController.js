@@ -5,11 +5,21 @@ const { createToken } = require('../helpers/jwt-token')
 module.exports = {
     getCliente: async (req, res) => {
         try {
-            const retorno = await models.getCliente(); 
-    
-            return res.json(retorno);
+            
+            let retorno
+
+            if(!req.query.limit && !req.query.offset)
+                retorno = await models.getCliente()
+            else{
+                retorno = {
+                    data: await models.getClientePag(req.query.limit, req.query.offset),
+                    limit: req.query.limit,
+                    total: (await models.getClienteCont())[0]['COUNT(*)']
+                }            
+            }
+            return res.json(retorno)
         } catch (err) {
-            return res.json({ error: err.toString() });
+            return res.json({ error: err.toString() })
 
         }
     },
@@ -28,12 +38,12 @@ module.exports = {
         try {
             const teste = hashPass(req.body.senha)
             const aux = {
-                'name': req.body.name,
+                'nome': req.body.name,
                 'email': req.body.email,
                 'senha': teste
             }
 
-            await models.createCliente(aux); 
+            await models.createCliente(aux) 
             
             
             return res.json({'status':'success'})
@@ -66,21 +76,21 @@ module.exports = {
     updateCliente: async (req, res) => {
         try {
             const data = req.body
-            const retorno = await models.updateCliente(req.params.id, data); 
+            const retorno = await models.updateCliente(req.params.id, data) 
 
-            return res.json(retorno);
+            return res.json(retorno)
         } catch (err) {
-            return res.json({ error: err });
+            return res.json({ error: err })
         }
     },
 
     deleteCliente: async (req, res) => {
         try {
-            const retorno = await models.deleteCliente(req.params.id); 
+            const retorno = await models.deleteCliente(req.params.id) 
     
-            return res.json(retorno);
+            return res.json(retorno)
         } catch (err) {
-            return res.json({ error: err });
+            return res.json({ error: err })
         }
     },
 }
