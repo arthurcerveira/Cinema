@@ -3,7 +3,12 @@ const database = require('./database');
 module.exports = {
     getCliente: async () => {
         return new Promise((resolve, reject) => {
-            const query = `SELECT * FROM cliente;`
+            const query = `SELECT cliente.id, 
+                                  cliente.nome,
+                                  cliente.email,
+                                  cliente.pontos,
+                                  cliente.data_criacao
+                                FROM cliente;`
     
             database.query(query, (err, res) => {
                 if (res) resolve(res);

@@ -1,9 +1,9 @@
 const express = require('express')
 const clienteController = require('../controllers/clienteController.js')
-const { validateToken } = require('../middlewares/authMiddleware')
+const { validateToken, validateAdminToken } = require('../middlewares/authMiddleware')
 const clienteRouter = express.Router()
 
-clienteRouter.get('/cliente/', validateToken, clienteController.getCliente)
+clienteRouter.get('/cliente/', validateAdminToken, clienteController.getCliente)
 clienteRouter.get('/cliente/:id', validateToken, clienteController.getClienteId)
 clienteRouter.put('/cliente/:id', validateToken, clienteController.updateCliente)
 clienteRouter.post('/cliente/', clienteController.createCliente)

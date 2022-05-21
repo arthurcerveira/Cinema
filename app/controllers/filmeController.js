@@ -19,7 +19,7 @@ module.exports = {
 
       return res.json(retorno);
     } catch (err) {
-      return res.json({ error: err });
+      return res.json({ error: err.toString() });
     }
   },
 
@@ -29,7 +29,7 @@ module.exports = {
 
       return res.json(retorno[0]);
     } catch (err) {
-      return res.json({ error: err });
+      return res.json({ error: err.toString() });
     }
   },
   getFilmePag: async (req, res) => {
@@ -38,7 +38,7 @@ module.exports = {
 
       return res.json(retorno);
     } catch (err) {
-      return res.json({ error: err });
+      return res.json({ error: err.toString() });
     }
   },
 
@@ -46,14 +46,13 @@ module.exports = {
     try {
       const retorno = await models.createFilme(req.body);
 
-      const adminid = parseInt(req.header("adminid"));
+      const adminid = req.user.id;
       if (!isNaN(adminid))
         await helper.createHistorico(adminid, "inserir filme", req.body);
 
-      return res.json(retorno);
+      return res.json({'status':'success'});
     } catch (err) {
-      console.log(err);
-      return res.json({ error: err });
+      return res.json({ error: err.toString() });
     }
   },
 
@@ -61,13 +60,13 @@ module.exports = {
     try {
       const retorno = await models.updateFilme(req.params.id, req.body);
 
-      const adminid = parseInt(req.header("adminid"));
+      const adminid = req.user.id;
       if (!isNaN(adminid))
         await helper.createHistorico(adminid, "atualizar filme", req.body);
 
-      return res.json(retorno);
+      return res.json({'status':'success'});
     } catch (err) {
-      return res.json({ error: err });
+      return res.json({ error: err.toString() });
     }
   },
 
@@ -85,9 +84,9 @@ module.exports = {
                 await helper.createHistorico(adminid, "deletar filme", dadosDoFilmeDeletadoAqui)
             */
 
-      return res.json(retorno);
+      return res.json({'status':'success'});
     } catch (err) {
-      return res.json({ error: err });
+      return res.json({ error: err.toString() });
     }
   },
 };
