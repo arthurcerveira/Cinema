@@ -38,7 +38,7 @@ module.exports = {
         try {
             const teste = hashPass(req.body.senha)
             const aux = {
-                'nome': req.body.name,
+                'nome': req.body.nome,
                 'email': req.body.email,
                 'senha': teste
             }
