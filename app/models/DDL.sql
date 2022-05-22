@@ -113,6 +113,7 @@ CREATE TABLE IF NOT EXISTS `cinema_dev`.`filme` (
   `genero` VARCHAR(100) NULL,
   `status` INT UNSIGNED NOT NULL,
   `descricao` VARCHAR(400) NULL,
+  `data_criacao` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE)
 ENGINE = InnoDB;
