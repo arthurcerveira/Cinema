@@ -9,7 +9,7 @@ module.exports = {
                 retorno = await models.getSessao() 
             else retorno = {
                 data: await models.getSessaoPag(req.query.limit, req.query.offset),
-                limit: req.query.limit,
+                limit: parseInt(req.query.limit),
                 total: (await models.getSessaoCont())[0]['COUNT(*)']
             }     
             

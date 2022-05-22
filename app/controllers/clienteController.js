@@ -13,7 +13,7 @@ module.exports = {
             else{
                 retorno = {
                     data: await models.getClientePag(req.query.limit, req.query.offset),
-                    limit: req.query.limit,
+                    limit: parseInt(req.query.limit),
                     total: (await models.getClienteCont())[0]['COUNT(*)']
                 }            
             }
