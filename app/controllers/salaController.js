@@ -10,7 +10,7 @@ module.exports = {
             }                 
             else retorno = {
                 data: await models.getSalaPag(req.query.limit, req.query.offset),
-                limit: req.query.limit,
+                limit: parseInt(req.query.limit),
                 total: (await models.getSalaCont())[0]['COUNT(*)']
             }     
 

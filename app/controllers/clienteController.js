@@ -13,7 +13,7 @@ module.exports = {
             else{
                 retorno = {
                     data: await models.getClientePag(req.query.limit, req.query.offset),
-                    limit: req.query.limit,
+                    limit: parseInt(req.query.limit),
                     total: (await models.getClienteCont())[0]['COUNT(*)']
                 }            
             }
@@ -38,7 +38,7 @@ module.exports = {
         try {
             const teste = hashPass(req.body.senha)
             const aux = {
-                'nome': req.body.name,
+                'nome': req.body.nome,
                 'email': req.body.email,
                 'senha': teste
             }
@@ -62,7 +62,7 @@ module.exports = {
         if(!user[0]) return res.status(403).json({'error': 'Email ou senha incorretos'})
 
         if(compareHash(senha, user[0].senha)){
-            const token = createToken({'id': user[0].id})
+            const token = createToken({'id': user[0].id, 'admin': false})
             return res.json({'token': token})
 
         } else{

@@ -48,4 +48,13 @@ module.exports = {
             });
         });
     },
+    getUser: async (user) => {
+        return new Promise((resolve, reject) => {
+            const query = `SELECT * FROM admin WHERE usuario="${user}";`;
+            database.query(query, (err, res) => {
+                if (res) resolve(res);
+                else reject(err);
+            });
+        });
+    },
 }
