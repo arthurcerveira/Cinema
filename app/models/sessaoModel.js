@@ -1,9 +1,9 @@
 const database = require('./database');
 
 module.exports = {
-    getSessao: async () => {
+    getSessao: async (queryComposer='') => {
         return new Promise((resolve, reject) => {
-            const query = `SELECT * FROM sessao JOIN sala ON sessao.sala_id=sala.id JOIN filme ON sessao.filme_id=filme.id;`
+            const query = `SELECT * FROM sessao JOIN sala ON sessao.sala_id=sala.id JOIN filme ON sessao.filme_id=filme.id ${queryComposer};`
     
             database.query(query, (err, res) => {
                 if (res) resolve(res);
@@ -23,9 +23,9 @@ module.exports = {
         });
     },
 
-    getSessaoCont: async () => {
+    getSessaoCont: async (queryComposer) => {
         return new Promise((resolve, reject) => {
-            const query = `SELECT COUNT(*) FROM sessao`
+            const query = `SELECT COUNT(*) FROM sessao ${queryComposer}`
     
             database.query(query, (err, res) => {
                 if (res) resolve(res);
@@ -34,9 +34,9 @@ module.exports = {
         });
     },
  
-    getSessaoPag: async (limit, offset) => {
+    getSessaoPag: async (limit, offset, queryComposer) => {
         return new Promise((resolve, reject) => {
-            const query = `SELECT * FROM sessao JOIN sala ON sessao.sala_id=sala.id JOIN filme ON sessao.filme_id=filme.id ORDER BY UNIX_TIMESTAMP(horario) LIMIT ${offset}, ${limit};`
+            const query = `SELECT * FROM sessao JOIN sala ON sessao.sala_id=sala.id JOIN filme ON sessao.filme_id=filme.id ${queryComposer} ORDER BY UNIX_TIMESTAMP(horario) LIMIT ${offset}, ${limit};`
     
             database.query(query, (err, res) => {
                 if (res) resolve(res);

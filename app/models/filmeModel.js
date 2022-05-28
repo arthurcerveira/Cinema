@@ -2,8 +2,9 @@ const database = require('./database');
 
 module.exports = {
     //queryComposer ou é uma string vazia ("")
-    //ou é uma string que contem "WHERE status=${status do filme}"
-    //assim, não é necessário dobrar a quantia de queries do db
+    //ou é uma string que contem:
+    //"WHERE status=${status do filme}", "WHERE genero='${Genero do filme}' ou ambos (where genero AND status)
+    //assim, não é necessário aumentar exponencialmente a quantia de querries do db
 
     getFilme: async (queryComposer='') => {
         return new Promise((resolve, reject) => {

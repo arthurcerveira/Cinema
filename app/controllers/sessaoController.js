@@ -4,21 +4,33 @@ const helper = require('../helpers/helper')
 module.exports = {
     getSessao: async (req, res) => {
         try {
-            let retorno 
+            let queryComposer = ''
+            if(req.query.data){
+                //usando queryComposer da mesma forma que no filme,
+                //pra seleção por datas
+                const data1 = new Date(req.query.data)
+                const data2  = new Date(parseInt(Date.parse(data1)) + 86400000)
+
+                const dataFormatado = data1.toISOString().slice(0, 19).replace('T', ' ').replaceAll('/', '-')
+                const dataFormatado2 = data2.toISOString().slice(0, 19).replace('T', ' ').replaceAll('/', '-')
+
+                queryComposer = `WHERE horario >="${dataFormatado}" AND horario < "${dataFormatado2}"`
+            }
+
+
             if(!req.query.limit && !req.query.offset)
-                retorno = await models.getSessao() 
-            else retorno = {
-                data: await models.getSessaoPag(req.query.limit, req.query.offset),
+                return res.json(await models.getSessao(queryComposer))
+            else 
+                return res.json({
+                data: await models.getSessaoPag(req.query.limit, req.query.offset, queryComposer),
                 limit: parseInt(req.query.limit),
-                total: (await models.getSessaoCont())[0]['COUNT(*)']
-            }     
+                total: (await models.getSessaoCont(queryComposer))[0]['COUNT(*)']
+            })
             
-            return res.json(retorno)
         } catch (err) {
             return res.json({ error: err.toString() })
         }
     },
-
 
     getCatalogo: async (req, res) => {
         try {

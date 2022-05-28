@@ -4,10 +4,16 @@ const helper = require("../helpers/helper");
 module.exports = {
   getFilme: async (req, res) => {
     try {
-      //queryComposer: caso for feita uma busca por status, todo o get será feito com base no status
+      //queryComposer: caso for feita uma busca por status/genero, todo o get será feito com base no status
       //caso não vier o status, não ocorre interferencia nas querries
-      const queryComposer = req.query.status ? 'WHERE status='+req.query.status : undefined
-      
+      let queryComposer = ''
+      if(req.query.status && req.query.genero) 
+        queryComposer += `WHERE status=${req.query.status} AND genero="${req.query.genero}"`
+      else if(req.query.status)
+        queryComposer += `WHERE status=${req.query.status}`
+      else if(req.query.genero)
+        queryComposer += `WHERE genero="${req.query.genero}"`
+
 
       if (!req.query.limit && !req.query.offset)
         res.json(await models.getFilme(queryComposer))
