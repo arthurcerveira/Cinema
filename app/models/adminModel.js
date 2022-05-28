@@ -10,10 +10,9 @@ module.exports = {
             });
         });
     },
-    getHistoricoPag: async (id, pag) => {
+    getHistoricoPag: async (id, limit, offset) => {
         return new Promise((resolve, reject) => {
-            const pagsize = pag * 10
-            const query = `SELECT * FROM historico WHERE admin_id=${id} ORDER BY UNIX_TIMESTAMP(data) DESC LIMIT ${pagsize}, 10;`
+            const query = `SELECT * FROM historico WHERE admin_id=${id} ORDER BY UNIX_TIMESTAMP(data) DESC LIMIT ${offset}, ${limit};`
             database.query(query, (err, res) => {
                 if (res) resolve(res);
                 else reject(err)
@@ -23,6 +22,17 @@ module.exports = {
     createHistorico: async (id, log) => {
         return new Promise((resolve, reject) => {
             const query = `INSERT INTO historico (log, admin_id) values ("${log}", ${id});`    
+            database.query(query, (err, res) => {
+                if (res) resolve(res);
+                else reject(err)
+            });
+        });
+    },
+
+    getHistoricoCont: async (id) => {
+        return new Promise((resolve, reject) => {
+            const query = `SELECT COUNT(*) FROM historico where admin_id=${id}`
+    
             database.query(query, (err, res) => {
                 if (res) resolve(res);
                 else reject(err)

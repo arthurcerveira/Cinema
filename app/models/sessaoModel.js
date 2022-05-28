@@ -69,7 +69,6 @@ module.exports = {
     updateSessao: async (id, sessao) => {
         return new Promise((resolve, reject) => {
             const query = `UPDATE sessao SET sala_id=${sessao.sala_id}, filme_id=${sessao.filme_id}, horario="${sessao.horario}" WHERE id=${id};`
-    
             database.query(query, (err, res) => {
                 if (res) resolve(res);
                 else reject(err)

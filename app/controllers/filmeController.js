@@ -4,20 +4,19 @@ const helper = require("../helpers/helper");
 module.exports = {
   getFilme: async (req, res) => {
     try {
-      let retorno;
+      //queryComposer: caso for feita uma busca por status, todo o get será feito com base no status
+      //caso não vier o status, não ocorre interferencia nas querries
+      const queryComposer = req.query.status ? 'WHERE status='+req.query.status : undefined
+      
 
-      if (req.query.status)
-        retorno = await models.getFilmeStatus(req.query.status);
-      else if (!req.query.limit && !req.query.offset)
-        retorno = await models.getFilme();
+      if (!req.query.limit && !req.query.offset)
+        res.json(await models.getFilme(queryComposer))
       else
-        retorno = {
-          data: await models.getFilmePag(req.query.limit, req.query.offset),
+        res.json({
+          data: await models.getFilmePag(req.query.limit, req.query.offset, queryComposer),
           limit: parseInt(req.query.limit),
-          total: (await models.getFilmeCont())[0]["COUNT(*)"],
-        };
-
-      return res.json(retorno);
+          total: (await models.getFilmeCont(queryComposer))[0]["COUNT(*)"],
+        })
     } catch (err) {
       return res.json({ error: err.toString() });
     }
@@ -39,7 +38,7 @@ module.exports = {
 
       const adminid = req.user.id;
       if (!isNaN(adminid))
-        await helper.createHistorico(adminid, "inserir filme", req.body);
+        await helper.createHistorico(adminid, "criar filme - id filme: "+retorno.insertId, req.body)
 
       return res.json({'status':'success'});
     } catch (err) {
@@ -53,7 +52,7 @@ module.exports = {
 
       const adminid = req.user.id;
       if (!isNaN(adminid))
-        await helper.createHistorico(adminid, "atualizar filme", req.body);
+        await helper.createHistorico(adminid, "atualizar filme - id filme: "+req.params.id, req.body);
 
       return res.json({'status':'success'});
     } catch (err) {
@@ -63,21 +62,15 @@ module.exports = {
 
   deleteFilme: async (req, res) => {
     try {
-      const retorno = await models.deleteFilme(req.params.id);
+      const retorno = await models.getFilmeId(req.params.id)
+      await models.deleteFilme(req.params.id)
+      const adminid = req.user.id
+      if (!isNaN(adminid))
+        await helper.createHistorico(adminid, "deletar filme - id filme: "+req.params.id, retorno)
 
-      /*
-            TODO: buscar os dados do filme do banco de dados (filmeModel) 
-            para inserir no local do req.body como histórico
-
-
-            const adminid = parseInt(req.header('adminid'))
-            if(!isNaN(adminid))
-                await helper.createHistorico(adminid, "deletar filme", dadosDoFilmeDeletadoAqui)
-            */
-
-      return res.json({'status':'success'});
+      return res.json({'status':'success'})
     } catch (err) {
-      return res.json({ error: err.toString() });
+      return res.json({ error: err.toString() })
     }
   },
 };

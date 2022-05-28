@@ -1,30 +1,23 @@
 const database = require('./database');
 
 module.exports = {
-    getFilme: async () => {
-        return new Promise((resolve, reject) => {
-            const query = `SELECT * FROM filme;`
-    
-            database.query(query, (err, res) => {
-                if (res) resolve(res);
-                else reject(err)
-            });
-        });
-    },
-    getFilmeCont: async () => {
-        return new Promise((resolve, reject) => {
-            const query = `SELECT COUNT(*) FROM filme`
-    
-            database.query(query, (err, res) => {
-                if (res) resolve(res);
-                else reject(err)
-            });
-        });
-    },
+    //queryComposer ou é uma string vazia ("")
+    //ou é uma string que contem "WHERE status=${status do filme}"
+    //assim, não é necessário dobrar a quantia de queries do db
 
-    getFilmeStatus: async (status) => {
+    getFilme: async (queryComposer='') => {
         return new Promise((resolve, reject) => {
-            const query = `SELECT * FROM filme WHERE status=${status};`
+            const query = `SELECT * FROM filme ${queryComposer};`
+    
+            database.query(query, (err, res) => {
+                if (res) resolve(res);
+                else reject(err)
+            });
+        });
+    },
+    getFilmeCont: async (queryComposer='') => {
+        return new Promise((resolve, reject) => {
+            const query = `SELECT COUNT(*) FROM filme ${queryComposer}`
     
             database.query(query, (err, res) => {
                 if (res) resolve(res);
@@ -44,9 +37,9 @@ module.exports = {
         });
     },
 
-    getFilmePag: async (limit, offset) => {
+    getFilmePag: async (limit, offset, queryComposer='') => {
         return new Promise((resolve, reject) => {
-            const query = `SELECT * FROM filme ORDER BY titulo LIMIT ${offset}, ${limit};`
+            const query = `SELECT * FROM filme ${queryComposer} ORDER BY titulo LIMIT ${offset}, ${limit};`
     
             database.query(query, (err, res) => {
                 if (res) resolve(res);
