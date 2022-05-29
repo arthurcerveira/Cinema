@@ -34,17 +34,16 @@ module.exports = {
     },
     
     getHistoricoId: async (req, res) => {
+        //pega o histórico pela id do admin
         try {
-            const admin = await models.getHistorico(req.params.id)
-            return res.json(admin);
-        } catch (err) {
-            return res.json({ error: err.toString() });
-        }
-    },
-    getHistoricoPag: async (req, res) => {
-        try {
-            const admin = await models.getHistoricoPag(req.params.id, req.params.pag)
-            return res.json(admin);
+            if (!req.query.limit && !req.query.offset)
+                return res.json(await models.getHistorico(req.params.id))
+            else
+                return res.json({
+                    data: await models.getHistoricoPag(req.params.id, req.query.limit, req.query.offset),
+                    limit: parseInt(req.query.limit),
+                    total: (await models.getHistoricoCont(req.params.id))[0]["COUNT(*)"]
+                })
         } catch (err) {
             return res.json({ error: err.toString() });
         }

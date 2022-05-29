@@ -6,18 +6,15 @@ module.exports = {
     getCliente: async (req, res) => {
         try {
             
-            let retorno
-
             if(!req.query.limit && !req.query.offset)
-                retorno = await models.getCliente()
-            else{
-                retorno = {
+                res.json(await models.getCliente())
+            else
+                res.json({
                     data: await models.getClientePag(req.query.limit, req.query.offset),
                     limit: parseInt(req.query.limit),
                     total: (await models.getClienteCont())[0]['COUNT(*)']
-                }            
-            }
-            return res.json(retorno)
+                })            
+            
         } catch (err) {
             return res.json({ error: err.toString() })
 
@@ -28,7 +25,7 @@ module.exports = {
         try {
             const retorno = await models.getClienteId(req.params.id)
     
-            return res.json(retorno)
+            return res.json(retorno[0])
         } catch (err) {
             return res.json({ error: err.toString() })
         }
@@ -44,7 +41,6 @@ module.exports = {
             }
 
             await models.createCliente(aux) 
-            
             
             return res.json({'status':'success'})
         } catch (err) {
@@ -86,6 +82,7 @@ module.exports = {
 
     deleteCliente: async (req, res) => {
         try {
+            //o cliente se auto deleta, o admin deleta o cliente, ou ambos?
             const retorno = await models.deleteCliente(req.params.id) 
     
             return res.json(retorno)
