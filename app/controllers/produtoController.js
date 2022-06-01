@@ -4,7 +4,7 @@ const helper = require('../helpers/helper')
 module.exports = {
     getProduto: async (req, res) => {
         try {
-            //let queryComposer = ''
+            let queryComposer = 'ORDER BY nome ASC '
       /*      if(req.query.data){
                 //usando queryComposer da mesma forma que no filme,
                 //pra seleção por datas
@@ -17,15 +17,24 @@ module.exports = {
                 queryComposer = `WHERE horario >="${dataFormatado}" AND horario < "${dataFormatado2}"`
             }*/
 
+            if(req.query.orderBy=='min')
+                queryComposer = 'ORDER BY valor ASC '
+            
+            if(req.query.orderBy=='max')
+                queryComposer = 'ORDER BY valor DESC '
+            
+
 
             if(!req.query.limit && !req.query.offset)
-                return res.json(await models.getProduto())
-            else 
-                return res.json({
-                data: await models.getProdutoPag(req.query.limit, req.query.offset),
-                limit: parseInt(req.query.limit),
-                total: (await models.getProdutoCont())[0]['COUNT(*)']
-            })
+                return res.json(await models.getProduto(queryComposer))
+            
+   
+                
+            return res.json({
+            data: await models.getProdutoPag(req.query.limit, req.query.offset, queryComposer),
+            limit: parseInt(req.query.limit),
+            total: (await models.getProdutoCont(queryComposer))[0]['COUNT(*)']})
+            
             
         } catch (err) {
             return res.json({ error: err.toString() })
@@ -67,7 +76,8 @@ module.exports = {
             const data = req.body
 
             const retorno = await models.createProduto(data) 
-            
+            retorno.insertId
+
             const adminid = req.user.id;
             if (!isNaN(adminid))
                 await helper.createHistorico(adminid, "criar produto - id produto: "+retorno.insertId, data)
