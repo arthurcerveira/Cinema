@@ -1,5 +1,6 @@
 const models = require('../models/salaModel');
-const helper = require('../helpers/helper')
+const helper = require('../helpers/helper');
+const cadeirasSalasModel = require('../models/cadeirasSalasModel');
 
 module.exports = {
     getSala: async (req, res) => {
@@ -32,7 +33,23 @@ module.exports = {
     createSala: async (req, res) => {
         try {
             const retorno = await models.createSala(req.body); 
-            
+            const {colunas, filas} = req.body
+
+
+            //para cada coluna e fila é criado uma cadeira
+            for(let i = 0; i < filas; i++){
+                for(let j = 0; j < colunas; j++){
+                    const cadeirasSalas = {
+                        sala_id: retorno.insertId,
+                        coluna: j+1,
+                        fila: i+1,
+                        status: 1
+                    }
+
+                    await cadeirasSalasModel.createCadeirasSalas(cadeirasSalas)
+                }
+            }
+
 
             const adminid = req.user.id;
             if (!isNaN(adminid))
@@ -72,4 +89,14 @@ module.exports = {
             return res.json({ error: err.toString() });
         }
     },
+
+    getSalaByNumero: async (req, res) => {
+        try {
+            const retorno = await models.getSalaByNumero(req.params.numero); 
+    
+            return res.json(retorno[0]);
+        } catch (err) {
+            return res.json({ error: err.toString() });
+        }
+    }
 }

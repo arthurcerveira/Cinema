@@ -77,4 +77,15 @@ module.exports = {
             });
         });
     },
+
+    getSalaByNumero: async (numero) => {
+        return new Promise((resolve, reject) => {
+            const query = `SELECT * FROM sala WHERE numero=${numero};`
+    
+            database.query(query, (err, res) => {
+                if (res) resolve(res);
+                else reject(err)
+            });
+        });
+    },
 }
