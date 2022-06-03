@@ -83,11 +83,13 @@ DROP TABLE IF EXISTS `cinema_dev`.`produtos_compra` ;
 CREATE TABLE IF NOT EXISTS `cinema_dev`.`produtos_compra` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `compra_id` INT UNSIGNED NOT NULL,
+  `ingresso_id` INT UNSIGNED NULL,
   `produto_id` INT UNSIGNED NOT NULL,
   PRIMARY KEY (`id`, `compra_id`, `produto_id`),
   UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE,
   INDEX `fk_produtos_compra_1_idx` (`compra_id` ASC) VISIBLE,
   INDEX `fk_produtos_compra_2_idx` (`produto_id` ASC) VISIBLE,
+  INDEX `fk_produtos_compra_3_idx` (`ingresso_id` ASC) VISIBLE,
   CONSTRAINT `fk_produtos_compra_1`
     FOREIGN KEY (`compra_id`)
     REFERENCES `cinema_dev`.`compra` (`id`)
@@ -96,6 +98,11 @@ CREATE TABLE IF NOT EXISTS `cinema_dev`.`produtos_compra` (
   CONSTRAINT `fk_produtos_compra_2`
     FOREIGN KEY (`produto_id`)
     REFERENCES `cinema_dev`.`produto` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_produtos_compra_3`
+    FOREIGN KEY (`ingresso_id`)
+    REFERENCES `cinema_dev`.`ingresso` (`id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB;
@@ -173,8 +180,9 @@ CREATE TABLE IF NOT EXISTS `cinema_dev`.`cadeira` (
   `fila` INT NOT NULL,
   `coluna` INT NOT NULL,
   `status` INT NULL,
+  `numero` INT NULL,
   `sessao_id` INT UNSIGNED NOT NULL,
-  PRIMARY KEY (`id`, `fila`, `coluna`),
+  PRIMARY KEY (`id`),
   INDEX `fk_cadeira_1_idx` (`sessao_id` ASC) VISIBLE,
   CONSTRAINT `fk_cadeira_1`
     FOREIGN KEY (`sessao_id`)
@@ -193,12 +201,12 @@ CREATE TABLE IF NOT EXISTS `cinema_dev`.`ingresso` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `sessao_id` INT UNSIGNED NOT NULL,
   `cadeira_id` INT UNSIGNED NOT NULL,
-  `valor` VARCHAR(45) NOT NULL,
-  `pontos` VARCHAR(45) NULL,
+  `produto_id` INT UNSIGNED NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE,
   INDEX `fk_ingresso_2_idx` (`sessao_id` ASC) VISIBLE,
   INDEX `fk_ingresso_3_idx` (`cadeira_id` ASC) VISIBLE,
+  INDEX `fk_ingresso_4_idx` (`produto_id` ASC) VISIBLE,
   CONSTRAINT `fk_ingresso_2`
     FOREIGN KEY (`sessao_id`)
     REFERENCES `cinema_dev`.`sessao` (`id`)
@@ -207,6 +215,11 @@ CREATE TABLE IF NOT EXISTS `cinema_dev`.`ingresso` (
   CONSTRAINT `fk_ingresso_3`
     FOREIGN KEY (`cadeira_id`)
     REFERENCES `cinema_dev`.`cadeira` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_ingresso_4`
+    FOREIGN KEY (`produto_id`)
+    REFERENCES `cinema_dev`.`produto` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
