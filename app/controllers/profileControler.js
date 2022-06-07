@@ -1,6 +1,4 @@
 const cliente = require('../models/clienteModel')
-const { validateToken } = require('../middlewares/authMiddleware')
-const jwt = require('jsonwebtoken')
 
 profile = (userData) => {
     return {
