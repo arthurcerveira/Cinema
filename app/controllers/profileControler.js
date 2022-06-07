@@ -2,6 +2,7 @@ const cliente = require('../models/clienteModel')
 
 profile = (userData) => {
     return {
+        id: userData.id
         nome: userData.nome,
         email: userData.email,
         pontos: userData.pontos
