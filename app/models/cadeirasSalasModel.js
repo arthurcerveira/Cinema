@@ -35,6 +35,25 @@ module.exports = {
         });
     },
 
+    createAllCadeirasSalas: async (allCadeirasSalas) => {
+        return new Promise((resolve, reject) => {
+            const queryBuilder = `
+                INSERT INTO cadeiras_sala (sala_id,status, coluna, fila) values 
+            `;
+
+            const cadeirasValues = allCadeirasSalas.map((cadeirasSala) =>
+                `(${cadeirasSala.sala_id},${cadeirasSala.status},${cadeirasSala.coluna},${cadeirasSala.fila})`
+            ).join(',\n');
+
+            const query = queryBuilder + cadeirasValues;
+
+            database.query(query, (err, res) => {
+                if (res) resolve(res);
+                else reject(err)
+            });
+        });
+    },
+
     deleteCadeirasSalas: async (id) => {
         return new Promise((resolve, reject) => {
             const query = `DELETE FROM cadeiras_sala WHERE id=${id};`
