@@ -14,12 +14,9 @@ module.exports = {
     getProfile: async (req, res) => {
         try {
             let userData
-            if (req.headers['authorization']){
-                validateToken(req, res, () => void 0)
-                if (!req.user.admin) {
-                    userData = await cliente.getClienteId(req.user.id)
-                    return res.json(profile(userData[0]))
-                }
+            if (!req.user.admin) {
+                userData = await cliente.getClienteId(req.user.id)
+                return res.json(profile(userData[0]))
             }
             userData = await cliente.getClienteId(req.params.id)
             return res.json(profile(userData[0]))
