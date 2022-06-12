@@ -5,14 +5,15 @@ const cadeirasSalasModel = require('../models/cadeirasSalasModel');
 module.exports = {
     getSala: async (req, res) => {
         try {
-            if (!req.query.limit && !req.query.offset) {
-                res.json(await models.getSala())
+            if(!req.query.limit && !req.query.offset){
+                return res.json(await models.getSala())
             }
-            res.json({
+            const retorno = {
                 data: await models.getSalaPag(req.query.limit, req.query.offset),
                 limit: parseInt(req.query.limit),
                 total: (await models.getSalaCont())[0]['COUNT(*)']
-            })
+            }
+            return res.json(retorno)
 
         } catch (err) {
             return res.json({ error: err.toString() });
