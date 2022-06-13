@@ -7,7 +7,7 @@ const sessaoRouter = require('./sessaoRouter')
 const clienteRouter = require('./clienteRouter')
 const produtoRouter = require('./produtoRouter')
 const cadeirasSalasRouter = require('./cadeirasSalasRouter')
-
+const cadeirasRouter = require('./cadeirasRouter')
 
 const router = express.Router()
 
@@ -18,5 +18,6 @@ router.use(sessaoRouter)
 router.use(clienteRouter)
 router.use(produtoRouter)
 router.use(cadeirasSalasRouter)
+router.use(cadeirasRouter)
 
 module.exports = router
