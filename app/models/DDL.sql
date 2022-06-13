@@ -83,11 +83,13 @@ DROP TABLE IF EXISTS `cinema_dev`.`produtos_compra` ;
 CREATE TABLE IF NOT EXISTS `cinema_dev`.`produtos_compra` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `compra_id` INT UNSIGNED NOT NULL,
+  `ingresso_id` INT UNSIGNED NULL,
   `produto_id` INT UNSIGNED NOT NULL,
   PRIMARY KEY (`id`, `compra_id`, `produto_id`),
   UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE,
   INDEX `fk_produtos_compra_1_idx` (`compra_id` ASC) VISIBLE,
   INDEX `fk_produtos_compra_2_idx` (`produto_id` ASC) VISIBLE,
+  INDEX `fk_produtos_compra_3_idx` (`ingresso_id` ASC) VISIBLE,
   CONSTRAINT `fk_produtos_compra_1`
     FOREIGN KEY (`compra_id`)
     REFERENCES `cinema_dev`.`compra` (`id`)
@@ -96,6 +98,11 @@ CREATE TABLE IF NOT EXISTS `cinema_dev`.`produtos_compra` (
   CONSTRAINT `fk_produtos_compra_2`
     FOREIGN KEY (`produto_id`)
     REFERENCES `cinema_dev`.`produto` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_produtos_compra_3`
+    FOREIGN KEY (`ingresso_id`)
+    REFERENCES `cinema_dev`.`ingresso` (`id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB;
@@ -164,30 +171,57 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
+-- Table `cinema_dev`.`cadeira`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `cinema_dev`.`cadeira` ;
+
+CREATE TABLE IF NOT EXISTS `cinema_dev`.`cadeira` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `fila` INT NOT NULL,
+  `coluna` INT NOT NULL,
+  `status` INT NULL,
+  `numero` INT NULL,
+  `sessao_id` INT UNSIGNED NOT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `fk_cadeira_1_idx` (`sessao_id` ASC) VISIBLE,
+  CONSTRAINT `fk_cadeira_1`
+    FOREIGN KEY (`sessao_id`)
+    REFERENCES `cinema_dev`.`sessao` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
 -- Table `cinema_dev`.`ingresso`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `cinema_dev`.`ingresso` ;
 
 CREATE TABLE IF NOT EXISTS `cinema_dev`.`ingresso` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `produto_id` INT UNSIGNED NOT NULL,
   `sessao_id` INT UNSIGNED NOT NULL,
-  `fila` VARCHAR(2) NOT NULL,
-  `coluna` VARCHAR(2) NOT NULL,
+  `cadeira_id` INT UNSIGNED NOT NULL,
+  `produto_id` INT UNSIGNED NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE,
-  INDEX `fk_ingresso_1_idx` (`produto_id` ASC) VISIBLE,
   INDEX `fk_ingresso_2_idx` (`sessao_id` ASC) VISIBLE,
-  CONSTRAINT `fk_ingresso_1`
-    FOREIGN KEY (`produto_id`)
-    REFERENCES `cinema_dev`.`produto` (`id`)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE,
+  INDEX `fk_ingresso_3_idx` (`cadeira_id` ASC) VISIBLE,
+  INDEX `fk_ingresso_4_idx` (`produto_id` ASC) VISIBLE,
   CONSTRAINT `fk_ingresso_2`
     FOREIGN KEY (`sessao_id`)
     REFERENCES `cinema_dev`.`sessao` (`id`)
     ON DELETE CASCADE
-    ON UPDATE CASCADE)
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_ingresso_3`
+    FOREIGN KEY (`cadeira_id`)
+    REFERENCES `cinema_dev`.`cadeira` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_ingresso_4`
+    FOREIGN KEY (`produto_id`)
+    REFERENCES `cinema_dev`.`produto` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
@@ -214,7 +248,7 @@ DROP TABLE IF EXISTS `cinema_dev`.`historico` ;
 
 CREATE TABLE IF NOT EXISTS `cinema_dev`.`historico` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `log` VARCHAR(1000) NOT NULL,
+  `log` VARCHAR(500) NOT NULL,
   `data` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `admin_id` INT UNSIGNED NOT NULL,
   PRIMARY KEY (`id`),
@@ -227,6 +261,54 @@ CREATE TABLE IF NOT EXISTS `cinema_dev`.`historico` (
 ENGINE = InnoDB;
 
 
+-- -----------------------------------------------------
+-- Table `cinema_dev`.`ingresso_compra`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `cinema_dev`.`ingresso_compra` ;
+
+CREATE TABLE IF NOT EXISTS `cinema_dev`.`ingresso_compra` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `compra_id` INT UNSIGNED NOT NULL,
+  `ingresso_id` INT UNSIGNED NOT NULL,
+  PRIMARY KEY (`id`, `compra_id`, `ingresso_id`),
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE,
+  INDEX `fk_produtos_compra_1_idx` (`compra_id` ASC) VISIBLE,
+  INDEX `fk_produtos_compra_20_idx` (`ingresso_id` ASC) VISIBLE,
+  CONSTRAINT `fk_produtos_compra_10`
+    FOREIGN KEY (`compra_id`)
+    REFERENCES `cinema_dev`.`compra` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_produtos_compra_20`
+    FOREIGN KEY (`ingresso_id`)
+    REFERENCES `cinema_dev`.`ingresso` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `cinema_dev`.`cadeiras_sala`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `cinema_dev`.`cadeiras_sala` ;
+
+CREATE TABLE IF NOT EXISTS `cinema_dev`.`cadeiras_sala` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `fila` INT NOT NULL,
+  `coluna` INT NOT NULL,
+  `sala_id` INT UNSIGNED NOT NULL,
+  `status` INT NOT NULL DEFAULT 1,
+  PRIMARY KEY (`id`),
+  INDEX `fk_cadeiras_sala_1_idx` (`sala_id` ASC) VISIBLE,
+  CONSTRAINT `fk_cadeiras_sala_1`
+    FOREIGN KEY (`sala_id`)
+    REFERENCES `cinema_dev`.`sala` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
+ENGINE = InnoDB;
+
+
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
