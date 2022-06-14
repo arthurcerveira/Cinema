@@ -13,11 +13,10 @@ module.exports = {
             
             const sessaoData = await sessaoModel.getSessaoId(req.params.id)
 
-            const sala = await salaModel.getSalaId(sessaoData[0].sala_id)
             const matrix = []
             let k = -1
             for(let i = 0; i < cadeiras.length; i++){
-                if (i % sala[0].colunas === 0){
+                if (i % sessaoData[0].colunas === 0){
                     k++
                     matrix[k] = []
                 }
