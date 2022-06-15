@@ -25,6 +25,17 @@ module.exports = {
         });
     },
 
+    getSessaoFilme: async (id) => {
+        return new Promise((resolve, reject) => {
+            const query = `SELECT id, DATE_FORMAT(horario,\'%d/%m %H:%i\') as horario FROM sessao WHERE filme_id=${id} AND horario >= CURDATE() ORDER BY UNIX_TIMESTAMP(horario) ASC ;`
+    
+            database.query(query, (err, res) => {
+                if (res) resolve(res);
+                else reject(err)
+            });
+        });
+    },
+
     getSessaoCont: async (queryComposer) => {
         return new Promise((resolve, reject) => {
             const query = `SELECT COUNT(*) FROM sessao ${queryComposer}`

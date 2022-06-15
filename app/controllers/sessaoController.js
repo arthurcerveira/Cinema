@@ -38,6 +38,31 @@ module.exports = {
             return res.json({ error: err.toString() })
         }
     },
+    getHorariosFilme: async (req, res) => {
+        try {
+            const sessoes = await models.getSessaoFilme(req.params.id)
+            const map = new Map()
+            
+            for(let i = 0; i< sessoes.length; i++){
+                const dataHora = sessoes[i].horario.split(' ')
+                if(map.has(dataHora[0]))
+                    map.get(dataHora[0]).push({
+                        id: sessoes[i].id,
+                        hora: dataHora[1]
+                    })
+                else map.set(dataHora[0], [{ 
+                    id: sessoes[i].id,
+                    hora: dataHora[1]
+                }])
+            }
+            
+            const json = Object.fromEntries(map)
+            return res.json(json)
+        } catch (err) {
+            return res.status(403).json({ error: err.toString() })
+        }
+
+    },
 
     getCatalogo: async (req, res) => {
         try {
@@ -47,7 +72,7 @@ module.exports = {
             const hojeNovo = new Date(hoje.getFullYear(), hoje.getMonth(), hoje.getDate(), hoje.getHours() - 3, 59, 58)
             const hojeFormatado = hojeNovo.toISOString().slice(0, 19).replace('T', ' ').replaceAll('/', '-')
 
-
+9
             const nextWeek = new Date(hoje.getFullYear(), hoje.getMonth(), hoje.getDate() + 7, 20, 59, 58)
             const nextWeekFormatado = nextWeek.toISOString().slice(0, 19).replace('T', ' ').replaceAll('/', '-')
 

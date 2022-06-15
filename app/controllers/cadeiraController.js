@@ -12,7 +12,6 @@ module.exports = {
 
             
             const sessaoData = await sessaoModel.getSessaoId(req.params.id)
-
             const matrix = []
             let k = -1
             for(let i = 0; i < cadeiras.length; i++){
