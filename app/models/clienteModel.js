@@ -28,7 +28,12 @@ module.exports = {
     },
     getClientePag: async (limit, offset) => {
         return new Promise((resolve, reject) => {
-            const query = `SELECT * FROM cliente ORDER BY UNIX_TIMESTAMP(data_criacao) DESC LIMIT ${offset}, ${limit};`
+            const query = `SELECT cliente.id, 
+                cliente.nome,
+                cliente.email,
+                cliente.pontos,
+                cliente.data_criacao 
+                FROM cliente ORDER BY UNIX_TIMESTAMP(data_criacao) DESC LIMIT ${offset}, ${limit};`
     
             database.query(query, (err, res) => {
                 if (res) resolve(res);
@@ -38,7 +43,12 @@ module.exports = {
     },
     getClienteId: async (id) => {
         return new Promise((resolve, reject) => {
-            const query = `SELECT * FROM cliente WHERE id=${id};`
+            const query = `SELECT cliente.id, 
+                cliente.nome,
+                cliente.email,
+                cliente.pontos,
+                cliente.data_criacao
+                FROM cliente WHERE id=${id};`
     
             database.query(query, (err, res) => {
                 if (res) resolve(res);
@@ -91,4 +101,14 @@ module.exports = {
             });
         });
     },
+
+    updatePontosCliente: async(id, pontos) => {
+        return new Promise((resolve, reject) => {
+            const query = `UPDATE cliente SET pontos=${pontos} WHERE id=${id};`
+            database.query(query, (err, res) => {
+                if (res) resolve(res);
+                else reject(err)
+            });
+        });
+    }
 }
