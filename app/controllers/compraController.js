@@ -145,7 +145,7 @@ module.exports = {
                 return res.json({'status':'success'})
             }
 
-            return res.json({'error':'Não foi possível realizar o pagamento'})
+            return res.status(400).json({'error':'Não foi possível realizar o pagamento'})
         } catch (err) {
             return res.status(400).json({ error: err.toString() })
         }
