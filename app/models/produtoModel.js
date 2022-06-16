@@ -49,7 +49,7 @@ module.exports = {
 
     createProduto: async (produto) => {
         return new Promise((resolve, reject) => {
-            var query = `INSERT INTO produto (nome, valor, pontos_retorno, descricao, estoque, is_ingresso, pontos_custo) values ("${produto.nome}", ${produto.valor}, ${produto.pontos_retorno}, "${produto.descricao}", ${produto.estoque}, ${produto.is_ingresso}, ${produto.pontos_custo});`    
+            var query = `INSERT INTO produto (nome, imagem, valor, pontos_retorno, descricao, estoque, is_ingresso, pontos_custo) values ("${produto.nome}", "${produto.imagem}", ${produto.valor}, ${produto.pontos_retorno}, "${produto.descricao}", ${produto.estoque}, ${produto.is_ingresso}, ${produto.pontos_custo});`    
 
             database.query(query, (err, res) => {
                 if (res) resolve(res);
@@ -61,7 +61,7 @@ module.exports = {
 
     updateProduto: async (id, produto) => {
         return new Promise((resolve, reject) => {
-            const query = `UPDATE produto SET nome="${produto.nome}", valor=${produto.valor}, pontos_retorno=${produto.pontos_retorno}, descricao="${produto.descricao}", estoque=${produto.estoque}, is_ingresso=${produto.is_ingresso}, pontos_custo=${produto.pontos_custo} WHERE id=${id};`
+            const query = `UPDATE produto SET nome="${produto.nome}", imagem="${produto.imagem}", valor=${produto.valor}, pontos_retorno=${produto.pontos_retorno}, descricao="${produto.descricao}", estoque=${produto.estoque}, is_ingresso=${produto.is_ingresso}, pontos_custo=${produto.pontos_custo} WHERE id=${id};`
             database.query(query, (err, res) => {
                 if (res) resolve(res);
                 else reject(err)
