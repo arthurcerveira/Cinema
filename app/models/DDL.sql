@@ -64,6 +64,7 @@ DROP TABLE IF EXISTS `cinema_dev`.`produto` ;
 CREATE TABLE IF NOT EXISTS `cinema_dev`.`produto` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `nome` VARCHAR(100) NOT NULL,
+  `imagem` VARCHAR(500) NOT NULL,
   `valor` DOUBLE NOT NULL,
   `pontos_retorno` INT NOT NULL,
   `descricao` VARCHAR(400) NULL,
