@@ -59,7 +59,7 @@ module.exports = {
 
         if(compareHash(senha, user[0].senha)){
             const token = createToken({'id': user[0].id, 'admin': false})
-            return res.json({'token': token})
+            return res.json({'token': token, 'nome': user[0].nome, 'pontos': user[0].pontos})
 
         } else{
             return res.status(403).json({'error': 'Email ou senha incorretos'})
