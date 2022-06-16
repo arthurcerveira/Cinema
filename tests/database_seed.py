@@ -1,6 +1,6 @@
 import requests
 
-from dados import filmes, salas, sessoes, clientes
+from dados import filmes, salas, sessoes, clientes, produtos
 
 
 url_base = 'http://localhost:5000/'
@@ -70,6 +70,16 @@ def cria_clientes(header):
         print(response.json())
 
 
+def cria_produtos(header):
+    print("\nCria produtos")
+
+    url = url_base + 'produto'
+
+    for produto in produtos:
+        response = requests.post(url, json=produto, headers=header)
+        print(response.json())
+
+
 if __name__ == '__main__':
     cria_admin()
 
@@ -80,5 +90,6 @@ if __name__ == '__main__':
     cria_salas(header)
     cria_sessoes(header)
     cria_clientes(header)
+    cria_produtos(header)
 
     print("\nTodos os objetos foram criados")

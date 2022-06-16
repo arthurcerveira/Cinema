@@ -89,3 +89,41 @@ clientes = [{
     'email': 'sit@email.com',
     'senha': 'teste'
 }]
+
+produtos = [{
+    'nome': 'Pipoca',
+    "imagem": "https://cdn.cineflix.com.br/bombo/7012/t_webp/produto_7012.webp",
+    'valor': 20.00,
+    "pontos_retorno": 2,
+    "descricao": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+    "estoque": 30,
+    "is_ingresso": 0,
+    "pontos_custo": 10
+}, {
+    'nome': 'Kit Kat',
+    "imagem": "https://cdn.cineflix.com.br/bombo/2064/t_webp/produto_2064.webp",
+    'valor': 5.00,
+    "pontos_retorno": 2,
+    "descricao": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+    "estoque": 20,
+    "is_ingresso": 0,
+    "pontos_custo": 5
+}, {
+    'nome': 'Água',
+    "imagem": "https://cdn.cineflix.com.br/bombo/2004/t_webp/produto_2004.webp",
+    'valor': 5.00,
+    "pontos_retorno": 2,
+    "descricao": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+    "estoque": 30,
+    "is_ingresso": 0,
+    "pontos_custo": 5
+}, {
+    'nome': 'Energético',
+    "imagem": "https://cdn.cineflix.com.br/bombo/77053012/t_webp/produto_77053012.webp",
+    'valor': 8.00,
+    "pontos_retorno": 2,
+    "descricao": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+    "estoque": 5,
+    "is_ingresso": 0,
+    "pontos_custo": 10
+}]
