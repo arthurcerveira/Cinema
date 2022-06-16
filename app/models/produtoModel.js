@@ -1,4 +1,3 @@
-const res = require('express/lib/response');
 const database = require('./database');
 
 module.exports = {
