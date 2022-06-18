@@ -1,12 +1,11 @@
 const models = require('../models/cadeirasModel');
 const sessaoModel = require('./../models/sessaoModel')
-const filmeModel = require('../models/filmeModel')
+/* const filmeModel = require('../models/filmeModel')
 const salaModel = require('./../models/salaModel')
 const helper = require('../helpers/helper')
 const ingressoModel = require('../models/ingressoModel');
-const { eventNames } = require('../models/database');
 const compraModel = require('../models/compraModel');
-const produtoModel = require('../models/produtoModel')
+const produtoModel = require('../models/produtoModel') */
 
 
 module.exports = {
