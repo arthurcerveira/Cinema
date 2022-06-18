@@ -20,6 +20,15 @@ module.exports = {
             });
         });
     },
+    getCadeirasId: async (id) => {
+        return new Promise((resolve, reject) => {
+            const query = `SELECT * FROM cadeira WHERE id=${id};`
+            database.query(query, (err, res) => {
+                if (res) resolve(res);
+                else reject(err)
+            });
+        });
+    },
     createAllCadeiras: async (allCadeiras) => {
         return new Promise((resolve, reject) => {
             const queryBuilder = `
@@ -38,4 +47,15 @@ module.exports = {
             });
         });
     },
+    updateCadeirasPlace: async (id, status) => {
+        return new Promise((resolve, reject) => {
+            const query = `UPDATE cadeira SET status=${status}  WHERE id=${id};`
+
+            database.query(query, (err, res) => {
+                if (res) resolve(res);
+                else reject(err)
+            });
+        });
+    },
+
 }

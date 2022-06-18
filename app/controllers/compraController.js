@@ -1,6 +1,11 @@
 const model = require('../models/compraModel');
 const model_product = require('../models/produtoModel');
 const model_cliente = require('../models/clienteModel');
+const ingressoModel = require('../models/ingressoModel');
+const cadeiraModel = require('../models/cadeirasModel');
+const env = require('dotenv')
+
+env.config()
 
 module.exports = {
     getCompras: async (req, res) => {
@@ -37,6 +42,29 @@ module.exports = {
                     return product[0]
                 })
             )
+
+            const cadeiras = req.body.chairs
+            const data_cadeiras = await Promise.all(
+                    await cadeiras.map(async cadeira => {
+                    const chair = await cadeiraModel.getCadeirasId(cadeira)
+                    if(chair[0].status === 4 || chair[0].status === 0){
+                        throw new Error('Cadeira já reservada');
+                    }
+                    const data = {
+                        "sessao_id": chair[0].sessao_id,
+                        "cadeira_id": chair[0].id,
+                        "produto_id": process.env.INGRESSO_ID
+                    }
+                    const retorno = await ingressoModel.createIngresso(data) 
+
+                    await cadeiraModel.updateCadeirasPlace(chair[0].id, 4)
+
+                    
+                    return chair[0]
+
+                })
+            )
+            const produtoIngresso = await model_product.getProdutoId(process.env.INGRESSO_ID)
             
             const sum_valor = await Promise.resolve( 
                 data_products.reduce(async (accumulator, product) => {
@@ -50,15 +78,15 @@ module.exports = {
                 }) 
             ) 
             const data = {
-                valor: sum_valor.valor,
-                pontos_retorno: sum_valor.pontos_retorno,
-                pontos_custo: sum_valor.pontos_custo,
+                valor: sum_valor.valor + produtoIngresso[0].valor * data_cadeiras.length,
+                pontos_retorno: sum_valor.pontos_retorno + produtoIngresso[0].pontos_retorno * data_cadeiras.length,
+                pontos_custo: sum_valor.pontos_custo + produtoIngresso[0].pontos_custo * data_cadeiras.length,
                 cliente_id: req.user.id,
-                forma_pagamento: 'teste'
+                forma_pagamento: 'Pendente'
             }
 
             const retorno = await model.createCompras(data) 
-            return res.json({'id': retorno.insertId, 'status': 'sucess'})
+            return res.json({'status': 'success', 'id_compra': retorno.insertId, 'compra': data, 'produtos':data_products, 'ingressos': data_cadeiras,})
         } catch (err) {
             return res.status(400).json({ error: err.toString() })
         }
