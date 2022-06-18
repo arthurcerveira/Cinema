@@ -1,5 +1,8 @@
 const models = require('../models/produtoModel')
 const helper = require('../helpers/helper')
+const env = require('dotenv')
+
+env.config()
 
 module.exports = {
     getProduto: async (req, res) => {
@@ -117,4 +120,14 @@ module.exports = {
             return res.json({ error: err.toString() })
         }
     },
+
+    getIngresso: async (req, res) => {
+        try {
+            const retorno = await models.getProdutoId(process.env.INGRESSO_ID) 
+    
+            return res.json(retorno[0])
+        } catch (err) {
+            return res.status(400).json({ error: err.toString() })
+        }
+    }
 }
