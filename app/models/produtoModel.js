@@ -1,9 +1,11 @@
 const database = require('./database');
+const dotenv = require('dotenv');
+dotenv.config();
 
 module.exports = {
     getProduto: async (queryComposer) => {
         return new Promise((resolve, reject) => {
-            const query = `SELECT * FROM produto ${queryComposer};`
+            const query = `SELECT * FROM produto WHERE id!=${process.env.INGRESSO_ID} ${queryComposer};`
     
             database.query(query, (err, res) => {
                 if (res) resolve(res);
@@ -25,7 +27,7 @@ module.exports = {
 
     getProdutoCont: async (queryComposer) => {
         return new Promise((resolve, reject) => {
-            const query = `SELECT COUNT(*) FROM produto ${queryComposer};`
+            const query = `SELECT COUNT(*) FROM produto WHERE id!=${process.env.INGRESSO_ID} ${queryComposer};`
     
             database.query(query, (err, res) => {
                 if (res) resolve(res);
@@ -36,7 +38,7 @@ module.exports = {
  
     getProdutoPag: async (limit, offset, queryComposer) => {
         return new Promise((resolve, reject) => {
-            const query = `SELECT * FROM produto ${queryComposer} LIMIT ${offset}, ${limit};`
+            const query = `SELECT * FROM produto WHERE id!=${process.env.INGRESSO_ID} ${queryComposer} LIMIT ${offset}, ${limit};`
     
             database.query(query, (err, res) => {
                 if (res) resolve(res);
