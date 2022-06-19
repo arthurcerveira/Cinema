@@ -63,6 +63,7 @@ DROP TABLE IF EXISTS `cinema_dev`.`produto` ;
 
 CREATE TABLE IF NOT EXISTS `cinema_dev`.`produto` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `nome` VARCHAR(100) NOT NULL,
   `valor` DOUBLE NOT NULL,
   `pontos_retorno` INT NOT NULL,
   `descricao` VARCHAR(400) NULL,
@@ -108,7 +109,8 @@ DROP TABLE IF EXISTS `cinema_dev`.`filme` ;
 CREATE TABLE IF NOT EXISTS `cinema_dev`.`filme` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `titulo` VARCHAR(100) NOT NULL,
-  `imagem` VARCHAR(500) NULL,
+  `poster` VARCHAR(500) NULL,
+  `widescreen` VARCHAR(500) NULL,
   `idade_min` VARCHAR(10) NULL,
   `genero` VARCHAR(100) NULL,
   `status` INT UNSIGNED NOT NULL,
@@ -212,7 +214,7 @@ DROP TABLE IF EXISTS `cinema_dev`.`historico` ;
 
 CREATE TABLE IF NOT EXISTS `cinema_dev`.`historico` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `log` VARCHAR(500) NOT NULL,
+  `log` VARCHAR(1000) NOT NULL,
   `data` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `admin_id` INT UNSIGNED NOT NULL,
   PRIMARY KEY (`id`),
