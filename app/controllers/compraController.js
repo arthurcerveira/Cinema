@@ -65,28 +65,48 @@ module.exports = {
                 })
             )
             const produtoIngresso = await model_product.getProdutoId(process.env.INGRESSO_ID)
-            
-            const sum_valor = await Promise.resolve( 
-                data_products.reduce(async (accumulator, product) => {
-                    
-                    const data = {
-                        valor: accumulator.valor + product.valor,
-                        pontos_retorno: accumulator.pontos_retorno + product.pontos_retorno,
-                        pontos_custo: accumulator.pontos_custo + product.pontos_custo
-                    }
-                    return data
-                }) 
-            ) 
-            const data = {
-                valor: sum_valor.valor + produtoIngresso[0].valor * data_cadeiras.length,
-                pontos_retorno: sum_valor.pontos_retorno + produtoIngresso[0].pontos_retorno * data_cadeiras.length,
-                pontos_custo: sum_valor.pontos_custo + produtoIngresso[0].pontos_custo * data_cadeiras.length,
-                cliente_id: req.user.id,
-                forma_pagamento: 'Pendente'
-            }
 
-            const retorno = await model.createCompras(data) 
-            return res.json({'status': 'success', 'id_compra': retorno.insertId, 'compra': data, 'produtos':data_products, 'ingressos': data_cadeiras,})
+            if ( data_products.length === 0){
+                const sum_valor = {
+                    "valor": 0,
+                    "pontos_retorno": 0,
+                    "pontos_custo": 0
+                }
+                const data = {
+                    valor: sum_valor.valor + produtoIngresso[0].valor * data_cadeiras.length,
+                    pontos_retorno: sum_valor.pontos_retorno + produtoIngresso[0].pontos_retorno * data_cadeiras.length,
+                    pontos_custo: sum_valor.pontos_custo + produtoIngresso[0].pontos_custo * data_cadeiras.length,
+                    cliente_id: req.user.id,
+                    forma_pagamento: 'Pendente'
+                }
+    
+                const retorno = await model.createCompras(data) 
+                return res.json({'status': 'success', 'id_compra': retorno.insertId, 'compra': data, 'produtos':data_products, 'ingressos': data_cadeiras,})
+            }
+            else {
+                const sum_valor = await Promise.resolve( 
+                    data_products.reduce((accumulator, product) => {
+
+                        const data = {
+                            valor: accumulator.valor + product.valor,
+                            pontos_retorno: accumulator.pontos_retorno + product.pontos_retorno,
+                            pontos_custo: accumulator.pontos_custo + product.pontos_custo
+                        }
+                        return data
+                    }) 
+                )
+            
+                const data = {
+                    valor: sum_valor.valor + produtoIngresso[0].valor * data_cadeiras.length,
+                    pontos_retorno: sum_valor.pontos_retorno + produtoIngresso[0].pontos_retorno * data_cadeiras.length,
+                    pontos_custo: sum_valor.pontos_custo + produtoIngresso[0].pontos_custo * data_cadeiras.length,
+                    cliente_id: req.user.id,
+                    forma_pagamento: 'Pendente'
+                }
+
+                const retorno = await model.createCompras(data) 
+                return res.json({'status': 'success', 'id_compra': retorno.insertId, 'compra': data, 'produtos':data_products, 'ingressos': data_cadeiras,})
+            }
         } catch (err) {
             return res.status(400).json({ error: err.toString() })
         }
