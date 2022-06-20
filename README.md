@@ -43,3 +43,12 @@ $ npm start
 ```
 
 A API agora estará sendo executada no endereço `localhost:5000/`.
+
+### Seed do banco de dados
+
+Foi criada uma seed para adicionar dados ao banco de dados. Para isso, é necessário possuir Python com a biblioteca requests instalados, e a API deve estar sendo executada.
+
+```bash
+$ cd tests
+$ python database_seed.py
+```
