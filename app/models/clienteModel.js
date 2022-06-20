@@ -83,7 +83,7 @@ module.exports = {
 
     updateCliente: async (id, cliente) => {
         return new Promise((resolve, reject) => {
-            const query = `UPDATE cliente SET nome="${cliente.nome}", email="${cliente.email}", senha="${cliente.senha}", pontos=${cliente.pontos} WHERE id=${id};`
+            const query = `UPDATE cliente SET nome="${cliente.nome}", email="${cliente.email}", pontos=${cliente.pontos} WHERE id=${id};`
             database.query(query, (err, res) => {
                 if (res) resolve(res);
                 else reject(err)
