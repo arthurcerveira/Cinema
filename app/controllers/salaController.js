@@ -1,17 +1,19 @@
 const models = require('../models/salaModel');
-const helper = require('../helpers/helper')
+const helper = require('../helpers/helper');
+const cadeirasSalasModel = require('../models/cadeirasSalasModel');
 
 module.exports = {
     getSala: async (req, res) => {
         try {
             if(!req.query.limit && !req.query.offset){
-                res.json(await models.getSala())
-            }                 
-            res.json({
+                return res.json(await models.getSala())
+            }
+            const retorno = {
                 data: await models.getSalaPag(req.query.limit, req.query.offset),
                 limit: parseInt(req.query.limit),
                 total: (await models.getSalaCont())[0]['COUNT(*)']
-            })
+            }
+            return res.json(retorno)
 
         } catch (err) {
             return res.json({ error: err.toString() });
@@ -20,8 +22,8 @@ module.exports = {
 
     getSalaId: async (req, res) => {
         try {
-            const retorno = await models.getSalaId(req.params.id); 
-    
+            const retorno = await models.getSalaId(req.params.id);
+
             return res.json(retorno[0]);
         } catch (err) {
             return res.json({ error: err.toString() });
@@ -31,28 +33,44 @@ module.exports = {
 
     createSala: async (req, res) => {
         try {
-            const retorno = await models.createSala(req.body); 
-            
+            const retorno = await models.createSala(req.body);
+            const { colunas, filas } = req.body
+
+            const allCadeirasSalas = [];
+
+            //para cada coluna e fila é criado uma cadeira
+            for (let i = 0; i < filas; i++) {
+                for (let j = 0; j < colunas; j++) {
+                    allCadeirasSalas.push({
+                        sala_id: retorno.insertId,
+                        coluna: j + 1,
+                        fila: i + 1,
+                        status: 1
+                    })
+                }
+            }
+
+            await cadeirasSalasModel.createAllCadeirasSalas(allCadeirasSalas)
 
             const adminid = req.user.id;
             if (!isNaN(adminid))
-                await helper.createHistorico(adminid, "criar sala - id sala: "+retorno.insertId, req.body)
+                await helper.createHistorico(adminid, "criar sala - id sala: " + retorno.insertId, req.body)
 
-            return res.json({'status':'success'});
+            return res.json({ 'status': 'success' });
         } catch (err) {
             return res.json({ error: err.toString() });
         }
     },
-    
+
     updateSala: async (req, res) => {
         try {
-            const retorno = await models.updateSala(req.params.id, req.body); 
-    
-            const adminid = parseInt(req.header('adminid'))
-            if(!isNaN(adminid))
-                await helper.createHistorico(adminid, "atualizar sala - id sala: "+req.params.id, req.body)
+            const retorno = await models.updateSala(req.params.id, req.body);
 
-            return res.json({'status':'success'});
+            const adminid = parseInt(req.header('adminid'))
+            if (!isNaN(adminid))
+                await helper.createHistorico(adminid, "atualizar sala - id sala: " + req.params.id, req.body)
+
+            return res.json({ 'status': 'success' });
         } catch (err) {
             return res.json({ error: err.toString() });
         }
@@ -61,15 +79,25 @@ module.exports = {
     deleteSala: async (req, res) => {
         try {
             const retorno = await models.getSalaId(req.params.id)
-            await models.deleteSala(req.params.id); 
+            await models.deleteSala(req.params.id);
 
             const adminid = parseInt(req.header('adminid'))
-            if(!isNaN(adminid))
-                await helper.createHistorico(adminid, "deletar sala - id sala"+req.params.id, retorno[0])
+            if (!isNaN(adminid))
+                await helper.createHistorico(adminid, "deletar sala - id sala" + req.params.id, retorno[0])
 
-            return res.json({'status':'success'});
+            return res.json({ 'status': 'success' });
         } catch (err) {
             return res.json({ error: err.toString() });
         }
     },
+
+    getSalaByNumero: async (req, res) => {
+        try {
+            const retorno = await models.getSalaByNumero(req.params.numero);
+
+            return res.json(retorno[0]);
+        } catch (err) {
+            return res.json({ error: err.toString() });
+        }
+    }
 }

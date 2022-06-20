@@ -1,5 +1,8 @@
 const models = require('../models/sessaoModel')
+const cadeiraSalaModel = require('../models/cadeirasSalasModel')
+const salaModel = require('../models/salaModel')
 const helper = require('../helpers/helper')
+const cadeirasModel = require('../models/cadeirasModel')
 
 module.exports = {
     getSessao: async (req, res) => {
@@ -17,7 +20,11 @@ module.exports = {
                 queryComposer = `WHERE horario >="${dataFormatado}" AND horario < "${dataFormatado2}"`
             }
 
-
+            if(req.query.filme){
+                if(queryComposer == '')
+                    queryComposer = `WHERE filme_id=${req.query.filme}`
+                else queryComposer += `AND filme_id=${req.query.filme}`
+            }
             if(!req.query.limit && !req.query.offset)
                 return res.json(await models.getSessao(queryComposer))
             else 
@@ -30,6 +37,31 @@ module.exports = {
         } catch (err) {
             return res.json({ error: err.toString() })
         }
+    },
+    getHorariosFilme: async (req, res) => {
+        try {
+            const sessoes = await models.getSessaoFilme(req.params.id)
+            const map = new Map()
+            
+            for(let i = 0; i< sessoes.length; i++){
+                const dataHora = sessoes[i].horario.split(' ')
+                if(map.has(dataHora[0]))
+                    map.get(dataHora[0]).push({
+                        id: sessoes[i].id,
+                        hora: dataHora[1]
+                    })
+                else map.set(dataHora[0], [{ 
+                    id: sessoes[i].id,
+                    hora: dataHora[1]
+                }])
+            }
+            
+            const json = Object.fromEntries(map)
+            return res.json(json)
+        } catch (err) {
+            return res.status(403).json({ error: err.toString() })
+        }
+
     },
 
     getCatalogo: async (req, res) => {
@@ -66,13 +98,41 @@ module.exports = {
         try {
             const data = req.body
             data.horario = data.horario.slice(0, 19).replace('T', ' ')
-
             const retorno = await models.createSessao(data) 
             
             const adminid = req.user.id;
             if (!isNaN(adminid))
                 await helper.createHistorico(adminid, "criar sessao - id sessao: "+retorno.insertId, data)
+            
+            const result = await cadeiraSalaModel.getCadeirasSalas(req.body.sala_id)
 
+            const sala = await salaModel.getSalaId(req.body.sala_id)
+
+            let numeroCount = 1
+            let columnMax = 1
+            const allCadeiras = []
+            for(let i = 0; i < result.length; i++){
+                if(numeroCount > sala[0].colunas || columnMax > sala[0].colunas){
+                    numeroCount = 1
+                    columnMax = 1
+                }
+                const cadeiraObj = {
+                    status: result[i].status,
+                    fila: result[i].fila,
+                    coluna: result[i].coluna,
+                    sessao_id: retorno.insertId
+                }
+                if(result[i].status == 0)
+                    cadeiraObj.numero = -1
+                else{
+                    cadeiraObj.numero = numeroCount
+                    numeroCount++
+                }
+                columnMax++
+                allCadeiras.push(cadeiraObj)
+                //const char = await cadeirasModel.createCadeiras(cadeiraObj)
+            }
+            await cadeirasModel.createAllCadeiras(allCadeiras)
             return res.json({'status':'success'})
         } catch (err) {
             return res.json({ error: err.toString() })
